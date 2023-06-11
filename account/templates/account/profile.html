@@ -1,0 +1,123 @@
+{% extends './base.html' %}
+{% load static %}
+
+        {% block title %}
+        {{username.upper}}
+        {% endblock title %}
+
+        {% block head %}
+        <link rel="stylesheet" href=" {% static 'styles/profile.css' %} ">
+        {% endblock head %}
+   
+
+        {% block body %}
+
+        <nav id="headnav">
+            <div id="userheadercontainer">
+
+                <div id="dpcontainer">
+                    <img id="dp" src="{{profile_image}}">
+                </div>
+                <h2 id="username">USERNAME:{{ username.upper }}</h2>
+                <div id="useremail">
+
+                    
+                {% if is_self %}
+                <h3>EMAIL:{{email}}</h3>
+                {% else %}
+                    {% if hide_email %}
+                        <h3>EMAIL: **********</h3>
+                        {% else %}
+                            <h3>EMAIL:{{email}}</h3>
+                    {% endif %}
+
+
+                {% endif %}
+                
+                </div>
+            </div>  
+            <div>        
+                    {% if is_self %}
+                            <div class="navcontainer">
+
+                                <div class="navlinkdiv navlinkdiv-left" id="addbuttondiv">
+                                    <a class="navlink navlink-left" id="editprofilelink" href="/update">Update</a>
+                                </div>
+                                    
+                                <div class="navlinkdiv navlinkdiv-right" id="logoutbuttondiv">
+                                    <a class="navlink navlink-right" id="logoutlink" href="/logout">Logout</a>
+                                </div>
+
+                            </div>
+    
+                    {% endif %}
+
+
+                    
+                    
+            </div>
+        </nav>
+
+
+        {% if request.user.is_authenticated %} 
+        {% if not is_self %}
+                <div class="navcontainer"id="utilitycontainer">
+                    {% if button1 %}
+                    <form class="navlinkdiv navlinkdiv-left utility-buttons" method="post">
+                        {% csrf_token %}
+                        <button class="navlink navlink-left" name="{{button1}}">{{button1}}</button>
+                    </form>
+                    {% endif %}
+
+                    {% if utilinfo %}
+                    <p class="whitetext">{{utilinfo}}</p>
+                    {% endif %}
+                    
+                    {% if button2 %}
+                    <form class="navlinkdiv navlinkdiv-right utility-buttons" method="post">
+                        {% csrf_token %}
+                        <button class="navlink navlink-right" name="{{button2}}">{{button2}}</button>
+                    </form>
+                    {% endif %}
+
+                </div>
+
+        {% endif %}
+        {% endif %}
+
+        <main id="profile-detail-container">
+
+            {% if profile_link1 or profile_link2 %}
+            <div id="profile-links">
+                
+                
+                <h2 class="linksheading">LINKS:</h2>
+
+                {% if profile_link1 %}
+                    <a class="profile-link" target="_blank" href="{{profile_link1}}">{{profile_link1_text|default_if_none:"Link 1"}}</a>
+                {% endif %}
+
+                {% if profile_link2 %}
+                    <a class="profile-link" target="_blank" href="{{profile_link2}}">{{profile_link2_text|default_if_none:"Link 2"}}</a>
+                {% endif %}
+            </div>
+            
+            {% endif %}
+
+            <div id="bio-container">
+                <h1 id="bio-heading">ABOUT</h1>
+                <p id="bio-text">
+                    {% if bio %}
+                    {{bio|default_if_none:""}}
+                    {% else %}
+                    {% if is_self %}
+                    This place feels empty.
+                    {% endif %}
+
+                    {% endif %}</p>
+            </div>
+
+        </main>
+
+
+        {% endblock body %}

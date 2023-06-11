@@ -1,0 +1,59 @@
+{% extends './base.html' %}
+{% load static %}
+
+        {% block title %}
+        Chats
+        {% endblock title %}
+
+        {% block head %}
+        <link rel="stylesheet" href=" {% static 'styles/texts.css' %} ">
+        {% endblock head %}
+   
+
+{% block body %}
+
+
+<nav id="headnav">
+    <div id="usernamecontainer">
+        <h2 id="username">HI, {{ user.username.upper }}.</h2>
+    </div>
+
+    <div id="navcontainer">
+
+        <div class="navlinkdiv" id="addbuttondiv">
+            <a class="navlink" id="addfriendlink" href="/requests">Requests({{reqamount}})</a>
+        </div>
+
+        <div class="navlinkdiv" id="accountbuttondiv">
+            <a class="navlink" id="accountlink" href="{% url 'user:view' username=request.user.username %}">My Account</a>
+        </div>
+
+    </div>
+</nav>
+
+<main id="friendlistcontainer">
+
+    <div id="myparagraphsheaderdiv">
+        <h3 id="myparagraphsheader">Texts</h3>
+    </div>
+
+    {% for message in messages  %}
+    <a class="textitem" href="/chat/{{message.textsender.username}}">
+        <div class="itemcontainer">
+            <div class="friendnametime">
+                <h3 class="friendname">{{message.textsender.username}}</h3>
+                <p class="timesent">{{message.edittime}}</p>
+            </div>
+            <div class="messagecontainer">
+                <p class="messagesnip">{{message.body|truncatechars:36|default_if_none:""}}</p>
+            </div>
+        </div>
+    </a>
+
+    {% endfor %}
+
+
+    
+
+</main>
+{% endblock body %}

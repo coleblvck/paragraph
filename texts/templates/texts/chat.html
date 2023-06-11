@@ -1,0 +1,137 @@
+<!DOCTYPE html>
+{% load static %}
+<html lang="en">
+    <head>
+        <meta charset="UTF-8">
+        <meta http-equiv="X-UA-Compatible" content="IE-edge">
+        <meta name="viewport" content="width=device-width, initial-scale=1.0">
+        <title>{{ person.username.upper }}</title> 
+
+        <link rel="stylesheet" href=" {% static 'styles/chat.css' %} ">
+
+
+        
+    </head>
+    <body>
+
+        <nav id="chattopnav">
+
+            <a href="/texts" class="nav-left nav-link">
+                <img src="{% static 'paragraph/nav-icons/texts.png' %}" class="nav-icon">
+            </a>
+
+            <h1 class="nav-center" id="friend-heading">{{ person.username }}</h1>
+
+            <a href="{% url 'user:view' username=person.username %}" class="nav-right nav-link">
+                <img src="{{ person.profile_image.url }}" class="nav-icon profileimage">
+            </a>
+                
+        
+        </nav>
+
+
+        {% if userexists %}
+        {% if ispersonfriend %}
+        <div id="seendiv">
+            <img id="seenimg" src={% static "paragraph/seenicon.png" %}>
+        </div>
+        <main id="chatbody">
+            <div class="chatbox chatbox-left">
+                <div class="message-div" id="inbox-message-div">
+                    <p id="inbox-text">
+                    {{ inbox.body|default_if_none:"" }} 
+                    </p>
+                </div>
+            </div>
+            <div class="chatbox chatbox-right">
+                <form class="message-div" id="outboxform">
+                    <textarea type="text" id="outbox-text" oninput="sendChat()" placeholder="Hey there" name="outbox">{{ outbox.body|default_if_none:"" }}</textarea>
+                </form>
+            </div>
+        </main>
+        {% else %}
+        <p>You are not friends with this user</p>
+        {% endif %}
+        {% else %}
+        <p>This user does not exist</p>
+        {% endif %}
+
+        <script>
+
+            function getCookie(name) {
+                let cookieValue = null;
+                if (document.cookie && document.cookie !== '') {
+                    const cookies = document.cookie.split(';');
+                    for (let i = 0; i < cookies.length; i++) {
+                        const cookie = cookies[i].trim();
+                        // Does this cookie string begin with the name we want?
+                        if (cookie.substring(0, name.length + 1) === (name + '=')) {
+                            cookieValue = decodeURIComponent(cookie.substring(name.length + 1));
+                            break;
+                        }
+                    }
+                }
+                return cookieValue;
+            }
+            const csrftoken = getCookie('csrftoken');
+
+
+
+            function sendChat(){
+                let chatMessage = document.getElementById("outbox-text").value
+
+
+                let url = "{% url 'sent_msg' person.username %}"
+
+                
+                async function postJSON(data) {
+                    try {
+                      const response = await fetch(url, {
+                        method: "POST", // or 'PUT'
+                        headers: {
+                          "Content-Type": "application/json",
+                          'X-CSRFToken': csrftoken
+                        },
+                        body: JSON.stringify(data),
+                      });
+                  
+                      const result = await response.json();
+                    } catch (error) {
+                      console.error("Error:", error);
+                    }
+                  }
+                  
+                  const data = { msg: chatMessage };
+                  postJSON(data);
+                  
+            }
+
+            setInterval(receiveChat, 500)
+
+            function receiveChat(){
+
+                let url = "{% url 'received_msg' person.username %}"
+
+                fetch(url)
+                .then(response => response.json())
+                .then(data => {
+                    let recMessage = document.getElementById("inbox-text")
+                    recMessage.innerHTML = data.body
+                    let seenbox = document.getElementById("seenimg")
+                    if (data.seenstatus == true) {
+                        seenbox.style.display = "block"
+                    } else{
+                        seenbox.style.display = "none"
+                    }
+                })
+                  
+            }
+
+
+        </script>
+
+
+        
+
+    </body>
+</html>

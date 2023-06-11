@@ -1,0 +1,66 @@
+<!DOCTYPE html>
+{% load static %}
+
+<html lang="en">
+    <head>
+        <meta charset="UTF-8">
+        <meta http-equiv="X-UA-Compatible" content="IE-edge">
+        <meta name="viewport" content="width=device-width, initial-scale=1.0">
+        <title>Paragraph</title>
+        <link rel="stylesheet" href=" {% static 'styles/login.css' %} ">
+        
+    </head>
+    <body oncontextmenu="return false;">
+
+
+        <div id="center-content">
+
+            <div id="logo-div">
+                <img id="logo" src="{% static 'assets/logo/logo-black.png' %}"/>
+            </div>
+
+            <h1 id="welcome">LOGIN</h1>
+            
+
+            <form id="loginform" method="post" class="form-group">
+                {% csrf_token %}
+
+
+
+
+                <div class="formerrordiv">
+                    {% for field in login_form %}
+
+                    
+                        {% for error in field.errors %}
+                        <p>{{ error }}</p>
+                        {% endfor %}
+                    
+
+                    {% endfor %}
+                    {% if login_form.non_field_errors %}
+                    
+                    <div class="formerrordiv">
+                        <p>{{ login_form.non_field_errors }} </p>
+                    </div>
+
+                    {% endif %}
+                </div>
+
+
+
+                <div id="emailinputdiv" class="form-control-div">
+                    <input type="email" name="email" id="inputemail" class="form-control" placeholder="Email Address" required autofocus>
+                </div>
+                <div id="passwordinputdiv" class="form-control-div">
+                    <input type="password" name="password" id="inputpassword" class="form-control" placeholder="Password" required>
+                </div>
+                <button id="submitbutton">
+                    ENTER
+                </button>
+            </form>
+
+        </div>
+
+    </body>
+</html>

@@ -1,0 +1,34 @@
+{% extends './base.html' %}
+{% load static %}
+
+{% block head %}
+<link rel="stylesheet" href=" {% static 'styles/requests.css' %} ">
+
+{% endblock head %}
+
+
+
+
+{% block body %}
+
+<h2 id="dashboardheader">Friend Dashboard</h2>
+
+<h3>Requests</h3>
+
+
+
+{% for request in requests %}
+    <a class="requestitem" href="/user/{{request.username}}">
+        <div class="itemcontainer">
+            <div class="item">
+                <img class="itemimage" src="{{request.profile_image.url}}">
+                <h3 class="itemname">{{request.username.upper}}</h3>
+            </div>
+        </div>
+    </a>
+{% endfor %}
+
+
+{% endblock body %}
+
+

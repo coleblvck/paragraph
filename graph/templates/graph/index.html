@@ -1,0 +1,65 @@
+<!DOCTYPE html>
+{% load static %}
+<html lang="en">
+    <head>
+        <meta charset="UTF-8">
+        <meta http-equiv="X-UA-Compatible" content="IE-edge">
+        <meta name="viewport" content="width=device-width, initial-scale=1.0">
+        <title>Paragraph</title> 
+
+        {% block head %}
+        <link rel="stylesheet" href=" {% static 'styles/main.css' %} ">
+        {% endblock %}
+        
+    </head>
+    <body oncontextmenu="return false;">
+
+
+        <div id="center-content">
+
+            <h1 id="welcome">
+                {% if user.is_authenticated %}
+          
+                  Hi {{user.username.upper}}!,
+                  
+                {% endif %}
+                
+                
+                Welcome to YOUR Paragraph
+            </h1>
+
+
+            {% if user.is_authenticated %}
+            
+
+            
+            <a class="buttonlink" id="continuebutton" href="/texts">
+                Continue
+            </a>
+
+            <a id="logoutlink" href="/logout">Or Logout here</a>
+            
+            {% endif %}
+
+
+            {% if not user.is_authenticated %}
+
+
+                <a class="buttonlink" id="proceed-link" href="/login">
+                    Login
+                </a>
+            <a href="get-started" id="learnmore">Learn more or sign up.</a>
+
+            {% endif %}
+
+        </div>
+
+        <div id="bottom-content">
+
+            <div id="bottom-logo-div">
+                <img id="bottom-logo" src="{% static 'assets/logo/logo-gold.png' %}"/>
+            </div>
+        </div>
+
+    </body>
+</html>

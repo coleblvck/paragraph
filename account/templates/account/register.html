@@ -1,0 +1,74 @@
+<!DOCTYPE html>
+{% load static %}
+<html lang="en">
+    <head>
+        <meta charset="UTF-8">
+        <meta http-equiv="X-UA-Compatible" content="IE-edge">
+        <meta name="viewport" content="width=device-width, initial-scale=1.0">
+        <title>Paragraph</title>
+        <link rel="stylesheet" href=" {% static 'styles/register.css' %} ">
+        
+    </head>
+    <body oncontextmenu="return false;">
+
+        <div id="aboutdiv">
+
+            <div id="reg-logo-div">
+                <img id="logo" src="{% static 'assets/logo/logo-black.png' %}"/>
+            </div>
+
+            <h1>About PARAGRAPH</h1>
+
+            <p>Everything in realtime... and in one paragraph at a time. Think you can keep up? Get started below.</p>
+        </div>
+
+        <hr id="longassline">
+
+
+        <div id="reg-center-content">
+
+            <h1 id="welcome">Get Started</h1>
+            
+
+            <form id="registerform" method="post" class="form-group">
+                    {% csrf_token %}
+
+
+                    <div class="formerrordiv">
+                        {% for field in registration_form %}
+
+                        <p>
+                            {% for error in field.errors %}
+                            <p>{{ error }}</p>
+                            {% endfor %}
+                        </p>
+
+                        {% endfor %}
+                        {% if registration_form.non_field_errors %}
+                        
+                        <div class="formerrordiv">
+                            <p>{{ registration_form.non_field_errors }} </p>
+                        </div>
+
+                        {% endif %}
+                    </div>
+
+                    <input type="email" name="email" id="inputemail" class="form-control" placeholder="Email Address" required autofocus>
+
+                    <input type="text" name="username" id="inputusername" class="form-control" placeholder="Username" required>
+
+                    <input type="password" name="password1" id="inputpassword1" class="form-control" placeholder="Password" required>
+
+                    <input type="password" name="password2" id="inputpassword2" class="form-control" placeholder="Confirm Password" required>
+
+
+
+                    <button id="registerbutton" type="submit" class="btn btn-success">
+                        REGISTER
+                    </button>
+            </form>
+
+        </div>
+
+    </body>
+</html>

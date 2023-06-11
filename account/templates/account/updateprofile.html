@@ -1,0 +1,142 @@
+{% extends './base.html' %}
+{% load static %}
+
+        {% block title %}
+        Edit Profile
+        {% endblock title %}
+
+        {% block head %}
+        <link rel="stylesheet" href=" {% static 'styles/updateprofile.css' %} ">
+        {% endblock head %}
+   
+
+{% block body %}
+
+
+
+<form method="post">
+    {% csrf_token %}
+
+
+
+    <div id="headnav">
+        <div id="userheadercontainer">
+
+            <div id="dpcontainer">
+                <img id="dp" src="{{ form.initial.profile_image.url }}">
+            </div>
+
+
+
+            <div class="user-email">
+
+            
+            <h3>USERNAME:</h3>
+            <input class="biodata" oninput="submit()" type="text" value="{{ form.initial.username }}" name="username">
+            
+            </div>
+
+
+            <div class="user-email">
+
+            
+            <h3>EMAIL:</h3>
+            <input class="biodata" type="text" value="{{ form.initial.email }}" name="email">
+            
+            </div>
+            <div class="hide-email">
+
+            
+            <h3>Hide Email:</h3>
+            <input class="biocheckbox" type="checkbox" {% if form.initial.hide_email == True %}checked{% endif%} name="hide_email">
+            
+            </div>
+
+
+            <div class="formerrordiv">
+                {% for field in form %}
+
+                    {% for error in field.errors %}
+                    <p>{{ error }}</p>
+                    {% endfor %}
+
+                {% endfor %}
+            </div>
+                {% if form.non_field_errors %}
+                
+                <div class="formerrordiv">
+                    <p>{{ form.non_field_errors }} </p>
+                </div>
+
+                {% endif %}
+
+
+
+
+
+
+        </div>  
+        <div>        
+
+            
+                        <div id="navcontainer">
+
+                            <div class="navlinkdiv navlinkdiv-left" id="addbuttondiv">
+                                <button class="navlink navlink-left" id="editprofilelink">Save</button>
+                            </div>
+                                
+                            <div class="navlinkdiv navlinkdiv-right" id="logoutbuttondiv">
+                                <a class="navlink navlink-right" id="logoutlink" href="{% url 'user:view' username=request.user.username %}">Cancel</a>
+                            </div>
+
+                        </div>
+
+                        {#% if request.user.is_authenticated %#}
+                        {% if request_sent == 0 %}
+
+                        <div id="addnav">
+
+                            <div class="navlinkdiv" id="addthisuserdiv">
+                                <a class="navlink" id="useraddlink" href="#">Add this user</a>
+                            </div>
+
+                        </div>
+
+                        {% endif %}
+
+                        {#% endif %#}
+
+                
+                
+        </div>
+    </div>
+
+    <main id="profile-detail-container">
+        <div id="profile-links">
+            
+            
+            <h2 class="linksheading">LINKS:</h2>
+
+                <div class="text-link-div">
+                    <h2>Link text:</h2><input class="profile-link" type="text" value="{{form.initial.profile_link1_text|default_if_none:""}}" name="profile_link1_text">
+                </div>
+                <div class="text-link-div">
+                <h2>Link:</h2><input type="text" class="profile-link" value="{{form.initial.profile_link1|default_if_none:""}}" name="profile_link1">
+                </div>
+
+                <div class="text-link-div">
+                    <h2>Link text:</h2><input class="profile-link" type="text" value="{{form.initial.profile_link2_text|default_if_none:""}}" name="profile_link2_text">
+                </div>
+                <div class="text-link-div">
+                <h2>Link:</h2><input type="text" class="profile-link" value="{{form.initial.profile_link2|default_if_none:""}}" name="profile_link2">
+                </div>
+        </div>
+
+        <div id="bio-container">
+            <h1 id="bio-heading">ABOUT</h1>
+            <textarea id="bio-text" maxlength="1000" name="bio">{{form.initial.bio|default_if_none:""}}</textarea>
+        </div>
+
+    </main>
+</form>
+{% endblock body %}
