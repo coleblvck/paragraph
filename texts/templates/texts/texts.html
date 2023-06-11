@@ -38,14 +38,14 @@
     </div>
 
     {% for message in messages  %}
-    <a class="textitem" href="/chat/{{message.textsender.username}}">
+    <a class="textitem {% if message.seen == False %}unseen{% endif %}" href="/chat/{{message.textsender.username}}">
         <div class="itemcontainer">
             <div class="friendnametime">
-                <h3 class="friendname">{{message.textsender.username}}</h3>
+                <h3 class="friendname">{{message.textsender.username|truncatechars:10}}</h3>
                 <p class="timesent">{{message.edittime}}</p>
             </div>
             <div class="messagecontainer">
-                <p class="messagesnip">{{message.body|truncatechars:36|default_if_none:""}}</p>
+                <p class="messagesnip">{{message.body|default_if_none:""|truncatechars:36}}</p>
             </div>
         </div>
     </a>

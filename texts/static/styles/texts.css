@@ -157,3 +157,8 @@ main {
     font-size: medium;
 
 }
+
+
+.unseen {
+    background-color: #f3dfb8 !important;
+}

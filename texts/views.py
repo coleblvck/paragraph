@@ -65,7 +65,7 @@ def sentmessages(request, friend):
     sentmessage = TextMessage.objects.get(textsender=currentuser, textreceiver=person)
     sentmessage.body = messagedata
     sentmessage.seen = False
-    sentmessage.save()
+    sentmessage.save(update_fields=['body', 'seen', 'edittime'])
     return JsonResponse("", safe=False)
     
 
@@ -75,8 +75,9 @@ def receivedmessages(request, friend):
     person = Account.objects.get(username=friend)
     receivedmessage = TextMessage.objects.get(textsender=person, textreceiver=currentuser)
     receivedmessage.seen = True
-    receivedmessage.save()
+    receivedmessage.save(update_fields=['seen'])
     sentmessage = TextMessage.objects.get(textsender=currentuser, textreceiver=person)
+    sentmessage.save(update_fields=['edittime'])
     messagedata = {}
     messagedata['body'] = receivedmessage.body
     messagedata['seenstatus'] = sentmessage.seen
