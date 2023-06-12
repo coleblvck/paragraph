@@ -1,0 +1,116 @@
+html{
+    height: 100%;
+    padding: 0;
+    margin: 0;
+}
+
+
+
+body {
+    user-select: none;
+    background-color: white;
+    color: black;
+    font-family: monospace;
+    font-size: small;
+    font-weight: bolder;
+    width: 100%;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    height: 100%;
+    justify-content: flex-start;
+    margin: 0;
+    padding-top: 100px;
+    padding-bottom: 120px;
+    overflow: scroll;
+}
+
+#aboutdiv {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    padding: 20px;
+}
+
+#logo {
+    width: 120px;
+    height: 120px;
+}
+
+
+#longassline {
+    width: 97%;
+    margin-bottom: 50px;
+}
+
+
+
+#reg-center-content {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    background-color: white;
+    padding: 30px 40px 30px 30px;
+    border-radius: 20px;
+    width: 70vw;
+    max-width: 300px;
+    -webkit-box-shadow: inset 0px 0px 5px 5px rgba(0,0,0,0.61); 
+    box-shadow: inset 0px 0px 5px 5px rgba(0,0,0,0.61);
+}
+
+#reg-logo-div {
+    border-radius: 30px;
+    width: fit-content;
+    background: linear-gradient(145deg, #e6e6e6, #ffffff);
+    box-shadow:  31px 31px 62px #fcfcfc,
+                 -31px -31px 62px #ffffff;
+
+
+    margin-bottom: 30px;
+}
+
+
+
+#welcome {
+    text-decoration: underline;
+    font-size: x-large;
+}
+
+
+#registerform {
+    display: flex;
+    flex-direction: column;
+    width: 100%;
+    align-items: center;
+    min-width: 200px;
+}
+
+
+
+.form-control {
+    border-radius: 5px;
+    border: solid;
+    width: 100%;
+    padding: 5px;
+    margin-bottom: 10px;
+    text-align: center;
+}
+
+#registerbutton {
+    padding: 10px;
+    margin-top: 20px;
+    background-color: #84846e;
+    border-radius: 10px;
+    color: white;
+    border: solid 2px #84846e;
+    -webkit-box-shadow: 0px 0px 6px 2px rgba(0,0,0,0.81); 
+    box-shadow: 0px 0px 6px 2px rgba(0,0,0,0.81);
+    cursor: pointer;
+}
+
+.formerrordiv {
+    color: rgb(170, 9, 9);
+    margin: 0;
+    padding: 0;
+    text-align: center;
+}

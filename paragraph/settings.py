@@ -30,7 +30,7 @@ SECRET_KEY = config('SECRET_KEY')
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = False
 
-ALLOWED_HOSTS = ["myparagraph.space", "www.myparagraph.space"]
+ALLOWED_HOSTS = ["*","myparagraph.space", "www.myparagraph.space"]
 
 AUTH_USER_MODEL = "account.Account"
 AUTHENTICATION_BACKENDS = (
@@ -152,12 +152,14 @@ STATIC_ROOT = '/home/childoftext/apps/paragraphstatic'
 
 MEDIA_URL = 'media/'
 
-MEDIA_ROOT = '/home/childoftext/apps/paragraphstatic'
+MEDIA_ROOT = '/home/childoftext/apps/paragraphstatic/usermedia'
 
 # Default primary key field type
 # https://docs.djangoproject.com/en/4.2/ref/settings/#default-auto-field
 
 DEFAULT_AUTO_FIELD = 'django.db.models.BigAutoField'
+
+BASE_URL = "https://myparagraph.space"
 
 
 CRISPY_TEMPLATE_PACK = "bootstrap4"
