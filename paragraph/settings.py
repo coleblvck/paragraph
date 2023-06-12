@@ -83,6 +83,7 @@ TEMPLATES = [
 ]
 
 ASGI_APPLICATION = 'paragraph.asgi.application'
+WSGI_APPLICATION = 'paragraph.wsgi.application'
 
 
 # Database
