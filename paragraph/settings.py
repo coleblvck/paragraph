@@ -102,7 +102,7 @@ DATABASES = {
         'NAME': DB_NAME,
         'USER': DB_USER,
         'PASSWORD': DB_PASSWORD,
-        'HOST': 'localhost',
+        'HOST': '',
         'PORT': '',
     }
 }
@@ -147,7 +147,7 @@ STATIC_ROOT = '/home/childoftext/apps/paragraphstatic'
 
 MEDIA_URL = 'media/'
 
-MEDIA_ROOT = '/home/childoftext/apps/paragraphstatic'
+MEDIA_ROOT = '/home/childoftext/apps/paragraphstatic/usermedia'
 
 # Default primary key field type
 # https://docs.djangoproject.com/en/4.2/ref/settings/#default-auto-field
