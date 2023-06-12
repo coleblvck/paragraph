@@ -150,9 +150,9 @@ STATIC_URL = "/static/"
 STATICFILES_STORAGE = "whitenoise.storage.CompressedManifestStaticFilesStorage"
 STATIC_ROOT = '/home/childoftext/apps/paragraphstatic'
 
-MEDIA_URL = '/assets/'
+MEDIA_URL = '/media/'
 
-MEDIA_ROOT = '/home/childoftext/apps/paragraphstatic/userassets'
+MEDIA_ROOT = BASE_DIR/'media'
 
 # Default primary key field type
 # https://docs.djangoproject.com/en/4.2/ref/settings/#default-auto-field
