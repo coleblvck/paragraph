@@ -150,7 +150,7 @@ STATIC_URL = "/static/"
 STATICFILES_STORAGE = "whitenoise.storage.CompressedManifestStaticFilesStorage"
 STATIC_ROOT = '/home/childoftext/apps/paragraphstatic'
 
-MEDIA_URL = 'media/'
+MEDIA_URL = '/static/'
 
 MEDIA_ROOT = '/home/childoftext/apps/paragraphstatic/usermedia'
 
