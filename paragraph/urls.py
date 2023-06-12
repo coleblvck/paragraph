@@ -37,7 +37,7 @@ urlpatterns = [
     path('update', profileupdate, name="update"),
     path('requests', friendsrequestsview, name="friendsrequestsview")
     #path('', include("graph.urls")),
-]
+] + static(settings.MEDIA_URL, document_root=settings.MEDIA_ROOT)
 
 
 urlpatterns += static(settings.MEDIA_URL, document_root = settings.MEDIA_ROOT)
