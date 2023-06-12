@@ -11,6 +11,9 @@ https://docs.djangoproject.com/en/4.2/ref/settings/
 """
 
 from pathlib import Path
+import os
+from dotenv import load_dotenv, find_dotenv
+
 
 # Build paths inside the project like this: BASE_DIR / 'subdir'.
 BASE_DIR = Path(__file__).resolve().parent.parent
@@ -20,12 +23,12 @@ BASE_DIR = Path(__file__).resolve().parent.parent
 # See https://docs.djangoproject.com/en/4.2/howto/deployment/checklist/
 
 # SECURITY WARNING: keep the secret key used in production secret!
-SECRET_KEY = 'django-insecure-dc#!8!uhn-og!jl95-thu5ctz3bzt7#2b0b#d2pq#)t6%jqlqf'
+SECRET_KEY = os.environ['SECRET_KEY']
 
 # SECURITY WARNING: don't run with debug turned on in production!
-DEBUG = True
+DEBUG = False
 
-ALLOWED_HOSTS = ["*"]
+ALLOWED_HOSTS = ["myparagraph.space", "www.myparagraph.space"]
 
 AUTH_USER_MODEL = "account.Account"
 AUTHENTICATION_BACKENDS = (
@@ -90,15 +93,15 @@ WSGI_APPLICATION = 'paragraph.wsgi.application'
 # https://docs.djangoproject.com/en/4.2/ref/settings/#databases
 DB_NAME = "myparagraphdb"
 DB_USER = "benandcole"
-DB_PASSWORD = "legosandmusic"
+DB_PASSWORD = "legosandmusic777"
 DATABASES = {
     'default': {
-        'ENGINE': 'django.db.backends.postgresql_psycopg2',
+        'ENGINE': 'django.db.backends.postgresql',
         'NAME': DB_NAME,
         'USER': DB_USER,
         'PASSWORD': DB_PASSWORD,
-        'HOST': 'localhost',
-        'PORT': '5432',
+        'HOST': '',
+        'PORT': '',
     }
 }
 
