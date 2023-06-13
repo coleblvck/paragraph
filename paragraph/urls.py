@@ -31,13 +31,15 @@ urlpatterns = [
     path('get-started', registerview, name="register"),
     path('logout', logoutview, name="logoutview"),
     path('login', loginview, name="loginview"),
+    # API Views
     path('sent_msg/<friend>', sentmessages, name="sent_msg"),
     path('received_msg/<friend>', receivedmessages, name="received_msg"),
+    #
     path('user/', include('account.urls', namespace="user")),
     path('update', profileupdate, name="update"),
     path('requests', friendsrequestsview, name="friendsrequestsview")
     #path('', include("graph.urls")),
-] + static(settings.MEDIA_URL, document_root=settings.MEDIA_ROOT)
+]
 
 
 urlpatterns += static(settings.MEDIA_URL, document_root = settings.MEDIA_ROOT)

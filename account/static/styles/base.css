@@ -22,6 +22,7 @@ body {
     height: fit-content;
     position: fixed;
     bottom: 0;
+    margin-bottom: 0;
     display: flex;
     flex-direction: column;
     align-items: center;

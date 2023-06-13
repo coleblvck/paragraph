@@ -1,3 +1,7 @@
+* {
+    box-sizing: border-box;
+}
+
 html{
     height: 100%;
     padding: 0;
@@ -8,8 +12,8 @@ html{
 
 body {
     user-select: none;
-    background-color: #e7cb94;
-    color: black;
+    background-color: #2f3132;
+    color: white;
     font-family: monospace;
     font-size: small;
     font-weight: bolder;
@@ -25,7 +29,8 @@ body {
 
 #headnav {
 
-    background-color: #84846e;
+    background-color: #2f3132;
+    box-shadow: 0px 15px 15px -10px rgba(0,0,0,1);
     color: white;
     display: flex;
     flex-direction: column;
@@ -48,7 +53,7 @@ body {
     flex-direction: column;
     align-items: center;
     justify-content: space-between;
-    background-color: #84846e;
+    background-color: #2f3132;
     box-shadow: 0px 0px 7px -50px rgba(0,0,0,0.1),-86px 84px 77px 0px rgba(0,0,0,0.1),0px 0px 21px -70px rgba(0,0,0,0.1),0px 10px 10px -100px rgba(0,0,0,0.1),0px 0px 5px 0px #000000;
     width: 85%;
     margin: 5px;
@@ -112,7 +117,7 @@ main {
 
 
 #myparagraphsheader {
-    margin-top: 80px;
+    margin-top: 50px;
     font-weight: 500;
     font-size: xx-large;
 }
@@ -121,16 +126,18 @@ main {
 
 .textitem {
     width: 90%;
-    background-color: #e7cb94;
+    background-color: #2f3132;
+    box-shadow: 0px 15px 15px -10px rgba(0,0,0,1);
     font-weight: 100;
     display: flex;
     flex-direction: column;
     align-items: center;
     border-bottom: solid 2px #5c5c4d;
-    border-top: solid 2px #5c5c4d;
-    margin-top: 2px;
+    border: solid 2px #5c5c4d;
+    border-radius: 20px;
+    margin-top: 8px;
     text-decoration: none;    
-    color: #461635;
+    color: #e7cb94;
 }
 
 .itemcontainer {
@@ -153,12 +160,12 @@ main {
 }
 
 .messagesnip {
-    color: #461635;
+    color: #e7cb94;
     font-size: medium;
 
 }
 
 
 .unseen {
-    background-color: #f3dfb8 !important;
+    background-color: #84846e !important;
 }

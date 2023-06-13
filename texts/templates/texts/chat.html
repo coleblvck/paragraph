@@ -4,7 +4,7 @@
     <head>
         <meta charset="UTF-8">
         <meta http-equiv="X-UA-Compatible" content="IE-edge">
-        <meta name="viewport" content="width=device-width, initial-scale=1.0">
+        <meta name="viewport" content="width=device-width, initial-scale=1.0, interactive-widget=resizes-content">
         <title>{{ person.username.upper }}</title> 
 
         <link rel="stylesheet" href=" {% static 'styles/chat.css' %} ">
@@ -16,14 +16,14 @@
 
         <nav id="chattopnav">
 
-            <a href="/texts" class="nav-left nav-link">
-                <img src="{% static 'paragraph/nav-icons/texts.png' %}" class="nav-icon">
+            <a href="/texts" class="chat-nav-left chat-nav-link">
+                <img src="{% static 'paragraph/nav-icons/texts.png' %}" class="chat-nav-icon">
             </a>
 
-            <h1 class="nav-center" id="friend-heading">{{ person.username }}</h1>
+            <h1 class="chat-nav-center" id="friend-heading">{{ person.username }}</h1>
 
-            <a href="{% url 'user:view' username=person.username %}" class="nav-right nav-link">
-                <img src="{{ person.profile_image.url }}" class="nav-icon profileimage">
+            <a href="{% url 'user:view' username=person.username %}" class="chat-nav-right chat-nav-link">
+                <img src="{{ person.profile_image.url }}" class="chat-nav-icon profileimage">
             </a>
                 
         
@@ -126,6 +126,11 @@
                 })
                   
             }
+
+
+              
+              
+
 
 
         </script>
