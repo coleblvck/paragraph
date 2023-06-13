@@ -4,7 +4,7 @@
     <head>
         <meta charset="UTF-8">
         <meta http-equiv="X-UA-Compatible" content="IE-edge">
-        <meta name="viewport" content="width=device-width, initial-scale=1.0">
+        <meta name="viewport" content="width=device-width, initial-scale=1.0, interactive-widget=resizes-content">
         <title>{{ person.username.upper }}</title> 
 
         <link rel="stylesheet" href=" {% static 'styles/chat.css' %} ">
@@ -12,7 +12,7 @@
 
         
     </head>
-    <body id="body">
+    <body>
 
         <nav id="chattopnav">
 
@@ -130,11 +130,10 @@
 
             
             
-            const body = document.getElementById("body");
             const viewport = window.visualViewport;
 
             function resizeHandler() {
-            body.style.height = viewport.height;
+            document.body.style.height = `${viewport.height}px`;
             }
 
             window.visualViewport.addEventListener("resize", resizeHandler);
