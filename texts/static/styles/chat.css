@@ -25,23 +25,25 @@ body {
     max-height: 100%;
     margin: 0;
     padding: 0px;
+    overflow-y: hidden;
 }
 
 
 #chattopnav {
     background-color: #2f3132;
-    box-shadow: 0px 15px 15px -10px rgba(0,0,0,1);
+    box-shadow: 0px 0px 100px 35px rgba(0,0,0,1);
     color: white;
     display: flex;
-    width: 100vw;
+    width: 98%;
     max-width: inherit;
-    padding: 0;
+    padding: 5px;
     margin: 0 0 10px 0;
     align-items: center;
     justify-content: space-between;
     font-size: x-large;
     position: sticky;
-    top: 0;
+    top: 6px;
+    border-radius: 5px;
 }
 
 .chat-nav-link {
@@ -159,7 +161,7 @@ body {
 }
 
 #outboxform {
-    background-color: #ffffff;
+    background-color: #eff0ed;
     
     border-radius: 30px 30px 50px 30px;
     margin-top: 20px;
@@ -172,13 +174,13 @@ body {
 #inbox-text {
     max-width: 100%;
     word-wrap: break-word;
-    overflow: scroll;
+    overflow-y: scroll;
     margin: 0;
 }
 
 #outbox-text {
 
-    background-color: #ffffff;
+    background-color: #eff0ed;
     color: black;
     width: 95%;
     max-width: 95%;
@@ -199,7 +201,7 @@ textarea:focus {
 }
 
 #outbox-text::placeholder {
-    color: white;
+    color: gray;
 }
 
 

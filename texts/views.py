@@ -7,6 +7,7 @@ from account.models import Account
 from friendships.utils import isfriend
 from django.http import JsonResponse
 import json
+from texts.utils import getuserinbox
 
 # Create your views here.
 
@@ -47,7 +48,7 @@ def chat(request, friend):
 def textsview(request):
 
     context = {}
-    userrecievedmessages = TextMessage.objects.filter(textreceiver=request.user).order_by('-edittime')
+    userrecievedmessages = getuserinbox(request.user)
     context['messages'] = userrecievedmessages
 
     userutil = FriendUtilities.objects.get(user=request.user)
@@ -82,3 +83,20 @@ def receivedmessages(request, friend):
     messagedata['body'] = receivedmessage.body
     messagedata['seenstatus'] = sentmessage.seen
     return JsonResponse(messagedata, safe=False)
+
+
+
+
+def textsscreen(request):
+
+    context = {}
+    inbox = getuserinbox(request.user)
+    context['inbox'] = inbox
+
+    userutil = FriendUtilities.objects.get(user=request.user)
+    friendrequests = userutil.requests.all()
+    context['reqamount'] = len(friendrequests)
+    data = context
+
+
+    return JsonResponse(data, safe=False)

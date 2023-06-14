@@ -20,7 +20,7 @@ from django.conf import settings
 from django.conf.urls.static import static
 from account.views import registerview, logoutview, loginview, profileview, profileupdate
 from graph.views import index
-from texts.views import chat, textsview, sentmessages, receivedmessages
+from texts.views import chat, textsview, sentmessages, receivedmessages, textsscreen
 from friendships.views import friendsrequestsview
 
 urlpatterns = [
@@ -34,6 +34,7 @@ urlpatterns = [
     # API Views
     path('sent_msg/<friend>', sentmessages, name="sent_msg"),
     path('received_msg/<friend>', receivedmessages, name="received_msg"),
+    path('textsscreen', textsscreen, name="textsscreen"),
     #
     path('user/', include('account.urls', namespace="user")),
     path('update', profileupdate, name="update"),

@@ -17,31 +17,30 @@ body {
     font-family: monospace;
     font-size: small;
     font-weight: bolder;
-    width: 100%;
+    width: 100vw;
     display: flex;
     flex-direction: column;
     align-items: center;
     height: 100%;
     justify-content: flex-start;
     margin: 0;
-    overflow: scroll;
+    padding: 0;
+    overflow-y: scroll;
 }
 
 #headnav {
 
     background-color: #2f3132;
     box-shadow: 0px 15px 15px -10px rgba(0,0,0,1);
-    color: white;
+    color: #e7cb94;
     display: flex;
     flex-direction: column;
-    width: 100vw;
-    max-width: inherit;
+    width: 100%;
     padding: 0;
     margin: 0;
     align-items: center;
     justify-content: space-between;
     font-size: medium;
-    margin-top: 0;
     border-radius: 0px 0px 25px 25px;
     position: sticky;
     top: 0;
@@ -79,7 +78,7 @@ body {
     align-items: center;
     justify-content: space-between;
     background-color: black;
-    width: 85vw;
+    width: 85%;
     margin-bottom: 20px;
     padding: 15px;
     border-radius: 18px;
@@ -120,18 +119,28 @@ main {
     margin-top: 50px;
     font-weight: 500;
     font-size: xx-large;
+    color: #ffffff;
+}
+
+#friendtextlist {
+    width: 100%;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
 }
 
 
 
 .textitem {
     width: 90%;
+    padding: 10px;
     background-color: #2f3132;
     box-shadow: 0px 15px 15px -10px rgba(0,0,0,1);
     font-weight: 100;
     display: flex;
     flex-direction: column;
     align-items: center;
+    justify-content: space-between;
     border-bottom: solid 2px #5c5c4d;
     border: solid 2px #5c5c4d;
     border-radius: 20px;
@@ -140,6 +149,8 @@ main {
     color: #e7cb94;
 }
 
+
+
 .itemcontainer {
     padding: 0;
     display: flex;
@@ -147,21 +158,28 @@ main {
     width: 90%;
 }
 
+.itemcontainer > hr {
+    width: 100%;
+    color: #000000;
+}
+
 .friendnametime {
     display: flex;
-    align-items: center;
-    justify-content: space-between;
+    flex-direction: column;
+    justify-content: center;
     width: 100%;
 }
 
 .friendname {
     font-weight: 500;
     font-size: xx-large;
+    margin: 0;
 }
 
 .messagesnip {
     color: #e7cb94;
     font-size: medium;
+    height: 10px;
 
 }
 

@@ -36,24 +36,101 @@
     <div id="myparagraphsheaderdiv">
         <h3 id="myparagraphsheader">Texts</h3>
     </div>
-
-    {% for message in messages  %}
-    <a class="textitem {% if message.seen == False %}unseen{% endif %}" href="/chat/{{message.textsender.username}}">
-        <div class="itemcontainer">
-            <div class="friendnametime">
-                <h3 class="friendname">{{message.textsender.username|truncatechars:10}}</h3>
-                <p class="timesent">{{message.edittime}}</p>
+    <div id="friendtextlist">
+        {% for message in messages  %}
+        <a class="textitem {% if message.3 == False %}unseen{% endif %}" href="/chat/{{message.0}}">
+            <div class="itemcontainer">
+                <div class="friendnametime">
+                    <h3 class="friendname">{{message.0|truncatechars:10}}</h3>
+                    <p class="timesent">{{message.2}}</p>
+                </div>
+                <hr>
+                <div class="messagecontainer">
+                    <p class="messagesnip">{{message.1|default_if_none:""|truncatechars:36}}</p>
+                </div>
             </div>
-            <div class="messagecontainer">
-                <p class="messagesnip">{{message.body|default_if_none:""|truncatechars:36}}</p>
-            </div>
-        </div>
-    </a>
-
-    {% endfor %}
+        </a>
+        {% endfor %}
+    </div>
 
 
     
 
 </main>
+
+<script>
+    function truncate(str, length) {
+        if (str.length > length) {
+          return str.slice(0, length) + '...';
+        } else return str;
+      }
+
+    setInterval(GetTextsAndReqAmount, 2000)
+
+            function GetTextsAndReqAmount(){
+
+                let url = "{% url 'textsscreen' %}"
+
+                fetch(url)
+                .then(response => response.json())
+                .then(data => {
+                    let addfriendlink = document.getElementById('addfriendlink')
+                    addfriendlink.innerHTML = `Requests(${data.reqamount})`
+
+                    let textList = document.getElementById("friendtextlist")
+                    textList.innerHTML = ""
+                    let messageitems = data.inbox
+                    
+                    for (let item in messageitems) {
+
+                        let textitem = document.createElement('a')
+                        textitem.classList.add('textitem')
+                        if (messageitems[item][3] == false){
+                            textitem.classList.add('unseen')
+                        }
+                        textitem.href = `/chat/${messageitems[item][0]}`
+
+                        let itemcontainer = document.createElement('div')
+                        itemcontainer.classList.add('itemcontainer')
+
+                        let friendnametime = document.createElement('div')
+                        friendnametime.classList.add('friendnametime')
+
+                        let friendname = document.createElement('h3')
+                        friendname.classList.add('friendname')
+                        friendname.innerHTML = truncate(messageitems[item][0], 10)
+
+                        let timesent = document.createElement('p')
+                        timesent.classList.add('timesent')
+                        timesent.innerHTML = messageitems[item][2]
+
+                        friendnametime.appendChild(friendname)
+                        friendnametime.appendChild(timesent)
+
+                        let hr = document.createElement('hr')
+
+                        let messagecontainer = document.createElement('div')
+                        messagecontainer.classList.add('messagecontainer')
+
+                        let messagesnip = document.createElement('p')
+                        messagesnip.classList.add('messagesnip')
+                        if (messageitems[item][1] === null){
+                            messagesnip.innerHTML = messageitems[item][1], 36
+                        } else {
+                            messagesnip.innerHTML = truncate(messageitems[item][1], 36)
+                        }
+                    
+                        messagecontainer.appendChild(messagesnip)
+
+                        itemcontainer.appendChild(friendnametime)
+                        itemcontainer.appendChild(hr)
+                        itemcontainer.appendChild(messagecontainer)
+                        textitem.appendChild(itemcontainer)
+                        textList.appendChild(textitem)
+                    }
+                })
+                  
+            }
+
+</script>
 {% endblock body %}
