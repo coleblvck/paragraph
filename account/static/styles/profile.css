@@ -24,7 +24,7 @@ body {
     height: 100%;
     justify-content: flex-start;
     margin: 0;
-    overflow: scroll;
+    overflow-y: scroll;
 }
 
 #headnav {
@@ -33,8 +33,7 @@ body {
     color: white;
     display: flex;
     flex-direction: column;
-    width: 100vw;
-    max-width: inherit;
+    width: 100%;
     padding: 0;
     margin: 0;
     align-items: center;
@@ -99,7 +98,7 @@ body {
     align-items: center;
     justify-content: space-between;
     background-color: black;
-    width: 85vw;
+    width: 85%;
     margin-bottom: 20px;
     padding: 10px;
     border-radius: 15px;

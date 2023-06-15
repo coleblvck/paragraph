@@ -1,0 +1,89 @@
+{% extends './base.html' %}
+{% load static %}
+
+{% block head %}
+<link rel="stylesheet" href=" {% static 'styles/dashboard.css' %} ">
+
+{% endblock head %}
+
+
+
+
+{% block body %}
+
+<h2 id="dashboardheader">Dashboard</h2>
+
+<div id="searchcontainer">
+    <input id="searchbox" type=search placeholder="Search" oninput="search()">
+</div>
+
+<div id="resultscontainer">
+</div>
+
+
+<h3>Requests</h3>
+
+
+<div id="requestscontainer">
+    {% for request in requests %}
+        <a class="requestitem" href="/user/{{request.username}}">
+            <div class="itemcontainer">
+                <div class="item">
+                    <img class="itemimage" src="{{request.profile_image.url}}">
+                    <h3 class="itemname">{{request.username.upper}}</h3>
+                </div>
+            </div>
+        </a>
+    {% endfor %}
+</div>
+
+
+<script>
+
+    function search(){
+        
+        let term = document.getElementById('searchbox').value
+        let resultList = document.getElementById("resultscontainer")
+        resultList.innerHTML = ""
+        if (term != ""){
+            let url = `/search/${term}`
+
+            fetch(url)
+            .then(response => response.json())
+            .then(data => {
+                
+
+                let resultitems = data.matchingusers
+                
+                for (let item in resultitems) {
+
+                    let resultitem = document.createElement('a')
+                    resultitem.classList.add('resultitem')
+                    resultitem.href = `/user/${resultitems[item][0]}`
+
+                    let itemcontainer = document.createElement('div')
+                    itemcontainer.classList.add('resultitemcontainer')
+
+                    let userimage = document.createElement('img')
+                    userimage.classList.add('resultuserimage')
+                    userimage.src = `${document.location.origin}/${resultitems[item][1]}`
+
+                    let username = document.createElement('p')
+                    username.classList.add('resultusername')
+                    username.innerHTML = resultitems[item][0]
+                    
+                    itemcontainer.appendChild(userimage)
+                    itemcontainer.appendChild(username)
+                    resultitem.appendChild(itemcontainer)
+                    resultList.appendChild(resultitem)
+                }
+            })
+        }
+    }
+
+
+</script>
+
+{% endblock body %}
+
+

@@ -8,6 +8,8 @@ from .models import Account
 from django.conf import settings
 from friendships.models import FriendList, FriendUtilities
 from friendships.utils import isfriend, amiblocked, isblocked, persontouser, usertoperson, sendrequest, cancelrequest, acceptrequest, declinerequest, unfriend, blockperson, unblockperson
+from django.http import JsonResponse
+from account.utils import userList, searchusers
 
 
 # Create your views here.
@@ -230,3 +232,18 @@ def profileupdate(request, *args, **kwargs):
     
     context['DATA_UPLOAD_MAX_MEMORY_SIZE'] = settings.DATA_UPLOAD_MAX_MEMORY_SIZE
     return render(request, "account/updateprofile.html", context)
+
+
+
+def userquery(request):
+    context = {}
+    context["allusers"] = userList()   
+
+    return JsonResponse(context, safe=False)
+
+
+def usersearch(request, username):
+    context = {}
+    context["matchingusers"] = searchusers(username)   
+
+    return JsonResponse(context, safe=False)

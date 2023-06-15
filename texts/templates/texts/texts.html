@@ -21,7 +21,7 @@
     <div id="navcontainer">
 
         <div class="navlinkdiv" id="addbuttondiv">
-            <a class="navlink" id="addfriendlink" href="/requests">Requests({{reqamount}})</a>
+            <a class="navlink" id="addfriendlink" href="/dashboard">Dashboard({{reqamount}})</a>
         </div>
 
         <div class="navlinkdiv" id="accountbuttondiv">
@@ -75,7 +75,7 @@
                 .then(response => response.json())
                 .then(data => {
                     let addfriendlink = document.getElementById('addfriendlink')
-                    addfriendlink.innerHTML = `Requests(${data.reqamount})`
+                    addfriendlink.innerHTML = `Dashboard(${data.reqamount})`
 
                     let textList = document.getElementById("friendtextlist")
                     textList.innerHTML = ""

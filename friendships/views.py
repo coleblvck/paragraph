@@ -4,7 +4,7 @@ from friendships.models import FriendUtilities
 # Create your views here.
 
 
-def friendsrequestsview(request, *args, **kwargs):
+def dashboardview(request, *args, **kwargs):
     context = {}
 
     userutil = FriendUtilities.objects.get(user=request.user)
@@ -12,4 +12,4 @@ def friendsrequestsview(request, *args, **kwargs):
     context['requests'] = friendrequests
 
 
-    return render(request, "friendships/requests.html", context)
+    return render(request, "friendships/dashboard.html", context)

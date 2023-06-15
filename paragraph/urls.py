@@ -18,10 +18,10 @@ from django.contrib import admin
 from django.urls import path, include
 from django.conf import settings
 from django.conf.urls.static import static
-from account.views import registerview, logoutview, loginview, profileview, profileupdate
+from account.views import registerview, logoutview, loginview, profileview, profileupdate, userquery, usersearch
 from graph.views import index
 from texts.views import chat, textsview, sentmessages, receivedmessages, textsscreen
-from friendships.views import friendsrequestsview
+from friendships.views import dashboardview
 
 urlpatterns = [
     path('', index, name="home"),
@@ -38,7 +38,9 @@ urlpatterns = [
     #
     path('user/', include('account.urls', namespace="user")),
     path('update', profileupdate, name="update"),
-    path('requests', friendsrequestsview, name="friendsrequestsview")
+    path('dashboard', dashboardview, name="dashboardview"),
+    path('userquery', userquery, name="userquery"),
+    path('search/<username>/', usersearch, name="usersearch"),
     #path('', include("graph.urls")),
 ]
 
