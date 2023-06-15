@@ -52,7 +52,7 @@
             .then(response => response.json())
             .then(data => {
                 
-
+                resultList.innerHTML = ""
                 let resultitems = data.matchingusers
                 
                 for (let item in resultitems) {
