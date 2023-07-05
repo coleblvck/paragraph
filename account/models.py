@@ -1,5 +1,6 @@
 from django.db import models
 from django.contrib.auth.models import AbstractBaseUser, BaseUserManager
+from friendships.models import FriendList, FriendUtilities
 
 # Create your models here.
 
@@ -20,6 +21,9 @@ class MyAccountManager(BaseUserManager):
 
         user.set_password(password)
         user.save(using=self._db)
+
+        FriendList.objects.create(user=user)
+        FriendUtilities.objects.create(user=user)
         return user
     
     def create_superuser(self, email, username, password):
@@ -55,17 +59,18 @@ class Account(AbstractBaseUser):
     is_staff = models.BooleanField(default=False)
     is_superuser = models.BooleanField(default=False)
     profile_image = models.ImageField(max_length=255, upload_to=get_profile_image_filepath, null=True, blank=True, default=get_default_profile_image)
-    bio = models.TextField(max_length=1000, null=True, blank=True)
-    profile_link1_text = models.CharField(max_length=30, null=True, blank=True)
-    profile_link1 = models.CharField(max_length=50, null=True, blank=True)
-    profile_link2_text = models.CharField(max_length=30, null=True, blank=True)
-    profile_link2 = models.CharField(max_length=50, null=True, blank=True)
+    bio = models.TextField(max_length=1000, null=True, blank=True, default="")
+    profile_link1_text = models.CharField(max_length=30, null=True, blank=True, default="")
+    profile_link1 = models.CharField(max_length=50, null=True, blank=True, default="")
+    profile_link2_text = models.CharField(max_length=30, null=True, blank=True, default="")
+    profile_link2 = models.CharField(max_length=50, null=True, blank=True, default="")
     hide_email = models.BooleanField(default=True)
 
     objects = MyAccountManager()
 
-    USERNAME_FIELD = 'email'
-    REQUIRED_FIELDS = ['username']
+    USERNAME_FIELD = 'username'
+    EMAIL_FIELD = 'email'
+    REQUIRED_FIELDS = ['email']
 
     def __str__(self):
         return self.username

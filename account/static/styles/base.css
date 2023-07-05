@@ -6,11 +6,16 @@ html{
 
 
 
+*::-webkit-scrollbar {
+    display: none;
+}
+
+
 body {
     user-select: none;
     width: 100%;
     margin: 0;
-    overflow: scroll;
+    overflow-y: scroll;
     font-family: monospace;
 }
 
@@ -18,7 +23,7 @@ body {
 #footer-nav {
     background-color: #000000;
     color: white;
-    width: 100vw;
+    width: 100%;
     height: fit-content;
     position: fixed;
     bottom: 0;

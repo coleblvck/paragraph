@@ -36,6 +36,9 @@ AUTH_USER_MODEL = "account.Account"
 AUTHENTICATION_BACKENDS = (
     'django.contrib.auth.backends.AllowAllUsersModelBackend',
     'account.backends.CaseInsensitiveModelBackend',
+
+
+    'graphql_auth.backends.GraphQLAuthBackend',
 )
 
 
@@ -57,6 +60,12 @@ INSTALLED_APPS = [
     'channels',
     'crispy_forms',
     'crispy_bootstrap4',
+
+
+    'graphene_django',
+    'graphql_jwt.refresh_token.apps.RefreshTokenConfig',
+    'graphql_auth',
+    'django_filters',
 ]
 
 MIDDLEWARE = [
@@ -166,3 +175,44 @@ CRISPY_TEMPLATE_PACK = "bootstrap4"
 
 
 DATA_UPLOAD_MAX_MEMORY_SIZE = 10485760 # 10 * 1024 * 1024 (10MB)
+
+GRAPHENE = {
+    'SCHEMA' : 'paragraph.schema.schema',
+    'MIDDLEWARE' : [
+        'graphql_jwt.middleware.JSONWebTokenMiddleware',
+    ],
+}
+
+
+GRAPHQL_JWT = {
+    "JWT_ALLOW_ANY_CLASSES": [
+        "graphql_auth.mutations.Register",
+        "graphql_auth.mutations.VerifyAccount",
+        "graphql_auth.mutations.ObtainJSONWebToken",
+    ],
+    "JWT_VERIFY_EXPIRATION": True,
+    "JWT_LONG_RUNNING_REFRESH_TOKEN": True,
+}
+
+
+EMAIL_BACKEND = 'django.core.mail.backends.smtp.EmailBackend'
+EMAIL_HOST = 'smtp.migadu.com'
+EMAIL_USE_TLS = True
+EMAIL_PORT = 465
+EMAIL_USE_SSL = True
+EMAIL_HOST_USER = 'setup@myparagraph.space'
+EMAIL_HOST_PASSWORD = config('EMAIL_PASS')
+
+
+GRAPHQL_AUTH ={
+    'UPDATE_MUTATION_FIELDS': [
+    "email",
+    "username",
+    "bio",
+    ],
+
+    'REGISTER_MUTATION_FIELDS': [
+    "email",
+    "username",
+    ],
+}

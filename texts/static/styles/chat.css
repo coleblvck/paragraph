@@ -9,6 +9,11 @@ html {
 }
 
 
+*::-webkit-scrollbar {
+    display: none;
+}
+
+
 
 body {
     user-select: none;

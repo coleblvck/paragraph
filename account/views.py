@@ -15,7 +15,7 @@ from account.utils import userList, searchusers
 # Create your views here.
 
 
-def registerview(request, *args, **kwargs):
+def registerview(request):
     user = request.user
     if user.is_authenticated:
         return HttpResponse(f"You are already authenticated as {user.username}.")
@@ -25,19 +25,16 @@ def registerview(request, *args, **kwargs):
     if request.POST:
         form = RegistrationForm(request.POST)
         if form.is_valid():
-            newuser = form.save()
+            user = form.save()
+            FriendList.objects.create(user=user)
+            FriendUtilities.objects.create(user=user)
 
-            FriendList.objects.create(user=newuser)
-            FriendUtilities.objects.create(user=newuser)
-
-            email = form.cleaned_data.get('email').lower()
-            raw_password = form.cleaned_data.get('password1')
-            account = authenticate(email=email, password=raw_password)
-            login(request, account)
-            destination = get_redirect_if_exists(request)
-            if destination:
-                return redirect(destination)
-            return redirect("home")
+            if user:
+                login(request, user, backend='django.contrib.auth.backends.AllowAllUsersModelBackend')
+                destination = get_redirect_if_exists(request)
+                if destination:
+                    return redirect(destination)
+                return redirect("home")
 
 
         else:
@@ -54,7 +51,7 @@ def logoutview(request):
 
 
 
-def loginview(request, *args, **kwargs):
+def loginview(request):
 
     context = {}
 
@@ -66,9 +63,9 @@ def loginview(request, *args, **kwargs):
     if request.POST:
         form = AccountAuthenticationForm(request.POST)
         if form.is_valid():
-            email = request.POST['email']
+            username = request.POST['username']
             password = request.POST['password']
-            user = authenticate(email=email, password=password)
+            user = authenticate(username=username, password=password)
             if user:
                 login(request, user)
                 destination = get_redirect_if_exists(request)

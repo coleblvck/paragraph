@@ -22,6 +22,9 @@ from account.views import registerview, logoutview, loginview, profileview, prof
 from graph.views import index
 from texts.views import chat, textsview, sentmessages, receivedmessages, textsscreen
 from friendships.views import dashboardview
+from django.views.decorators.csrf import csrf_exempt
+
+from graphene_django.views import GraphQLView
 
 urlpatterns = [
     path('', index, name="home"),
@@ -41,6 +44,9 @@ urlpatterns = [
     path('dashboard', dashboardview, name="dashboardview"),
     path('userquery', userquery, name="userquery"),
     path('search/<username>/', usersearch, name="usersearch"),
+
+    # Graphql
+    path('graphql', csrf_exempt(GraphQLView.as_view(graphiql=True))),
     #path('', include("graph.urls")),
 ]
 
