@@ -168,7 +168,7 @@ MEDIA_ROOT = '/home/childoftext/apps/paragraphmedia'
 
 DEFAULT_AUTO_FIELD = 'django.db.models.BigAutoField'
 
-BASE_URL = "myparagraph.space"
+BASE_URL = "www.myparagraph.space"
 
 
 CRISPY_TEMPLATE_PACK = "bootstrap4"
