@@ -28,17 +28,16 @@ BASE_DIR = Path(__file__).resolve().parent.parent
 SECRET_KEY = config('SECRET_KEY')
 
 # SECURITY WARNING: don't run with debug turned on in production!
-DEBUG = True
+DEBUG = False
 
-ALLOWED_HOSTS = ["*"]
+ALLOWED_HOSTS = ["myparagraph.space", "www.myparagraph.space"]
 
 AUTH_USER_MODEL = "account.Account"
 AUTHENTICATION_BACKENDS = (
     'django.contrib.auth.backends.AllowAllUsersModelBackend',
     'account.backends.CaseInsensitiveModelBackend',
 
-    # New
-    ##'graphql_jwt.backends.JSONWebTokenBackend',
+
     'graphql_auth.backends.GraphQLAuthBackend',
 )
 
@@ -62,7 +61,7 @@ INSTALLED_APPS = [
     'crispy_forms',
     'crispy_bootstrap4',
 
-    # new
+
     'graphene_django',
     'graphql_jwt.refresh_token.apps.RefreshTokenConfig',
     'graphql_auth',
@@ -107,14 +106,14 @@ WSGI_APPLICATION = 'paragraph.wsgi.application'
 # https://docs.djangoproject.com/en/4.2/ref/settings/#databases
 DB_NAME = "myparagraphdb"
 DB_USER = "benandcole"
-DB_PASSWORD = "legosandmusic"
+DB_PASSWORD = "legosandmusic777"
 DATABASES = {
     'default': {
         'ENGINE': 'django.db.backends.postgresql',
         'NAME': DB_NAME,
         'USER': DB_USER,
         'PASSWORD': DB_PASSWORD,
-        'HOST': 'localhost',
+        'HOST': '',
         'PORT': '',
     }
 }
@@ -158,27 +157,18 @@ USE_TZ = True
 
 STATIC_URL = "/static/"
 STATICFILES_STORAGE = "whitenoise.storage.CompressedManifestStaticFilesStorage"
-STATIC_ROOT= os.path.join(BASE_DIR,'static/')
-
-
-# STATIC_ROOT = '/home/childoftext/apps/paragraphstatic'
+STATIC_ROOT = '/home/childoftext/apps/paragraphstatic'
 
 MEDIA_URL = '/media/'
 
-MEDIA_ROOT= os.path.join(BASE_DIR,'media/')
-
-# PRODUCTION
-# 
-# MEDIA_ROOT = '/home/childoftext/apps/paragraphstatic/usermedia'
-
-
+MEDIA_ROOT = '/home/childoftext/apps/paragraphmedia'
 
 # Default primary key field type
 # https://docs.djangoproject.com/en/4.2/ref/settings/#default-auto-field
 
 DEFAULT_AUTO_FIELD = 'django.db.models.BigAutoField'
 
-BASE_URL = "127.0.0.1:8000"
+BASE_URL = "www.myparagraph.space"
 
 
 CRISPY_TEMPLATE_PACK = "bootstrap4"
@@ -186,8 +176,6 @@ CRISPY_TEMPLATE_PACK = "bootstrap4"
 
 DATA_UPLOAD_MAX_MEMORY_SIZE = 10485760 # 10 * 1024 * 1024 (10MB)
 
-
-# new
 GRAPHENE = {
     'SCHEMA' : 'paragraph.schema.schema',
     'MIDDLEWARE' : [
