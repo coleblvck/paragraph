@@ -9,32 +9,12 @@ from graphql_auth import mutations
 from graphql_auth.schema import UserQuery, MeQuery
 import graphql_jwt
 
-from friendships import utils
+from friendships.utils import isfriend, isblocked, amiblocked, persontouser, usertoperson
+
+from .types import AccountType, FriendListType,FriendUtilitiesType ,TextMessageType
 
 
 
-class AccountType(DjangoObjectType):
-    class Meta:
-        model = Account
-        fields = ("email", "username", "date_joined", "profile_image", "bio", "profile_link1_text", "profile_link1", "profile_link2_text", "profile_link2", "hide_email")
-
-
-class FriendListType(DjangoObjectType):
-    class Meta:
-        model = FriendList
-        fields = ("user", "friends")
-
-
-class FriendUtilitiesType(DjangoObjectType):
-    class Meta:
-        model = FriendUtilities
-        fields = ("user", "requests", "userblocked")
-
-
-class TextMessageType(DjangoObjectType):
-    class Meta:
-        model = TextMessage
-        fields = ("textsender", "textreceiver", "body", "edittime", "seen")
 
 
 
@@ -120,6 +100,47 @@ class Query(UserQuery, MeQuery, graphene.ObjectType):
             seentime = timezone.localtime(receivedmessage.edittime, timezone.get_fixed_timezone(60))
             seentimeadjusted = seentime.strftime("%c")
             return seentimeadjusted
+        
+    profileactions = graphene.Field(otheruser= graphene.String())
+    def resolve_profileactions(root, info, otheruser):
+        profile_relation = []
+        profile_relation["button1"] = ""
+        profile_relation["button2"] = ""
+        if info.context.user.is_authenticated:
+            user = info.context.user
+            other_user = Account.objects.get(username=otheruser)
+            if user != other_user:
+                is_friend = isfriend(user, other_user)
+                is_blocked = isblocked(user, other_user)
+                am_iblocked = amiblocked(user, other_user)
+                themtouser = persontouser(user, other_user)
+                usertothem = usertoperson(user, other_user)
+                if not am_iblocked:
+                    if is_friend:
+                        profile_relation['button1'] = "block"
+                        profile_relation['button2'] = "unfriend"
+                        profile_relation['utilinfo'] = "Friends"
+                    elif is_blocked:
+                        profile_relation['button1'] = "unblock"
+                    elif themtouser:
+                        profile_relation['button1'] = "decline"
+                        profile_relation['button2'] = "accept"
+                    elif usertothem:
+                        profile_relation['button1'] = "cancel"
+                    else:
+                        profile_relation['button1'] = "block"
+                        profile_relation['button2'] = "add"
+                else:
+                    if is_blocked:
+                        profile_relation['button1'] = 'unblock'
+                    else:
+                        profile_relation['button1'] = 'block'
+                    
+                    profile_relation['utilinfo'] = "You have been blocked by this user"
+
+
+        return profile_relation
+    
 
 
 class SendMessageMutation(graphene.Mutation):
