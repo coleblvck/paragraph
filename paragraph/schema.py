@@ -101,9 +101,9 @@ class Query(UserQuery, MeQuery, graphene.ObjectType):
             seentimeadjusted = seentime.strftime("%c")
             return seentimeadjusted
         
-    profileactions = graphene.Field(otheruser= graphene.String())
+    profileactions = graphene.String(otheruser= graphene.String())
     def resolve_profileactions(root, info, otheruser):
-        profile_relation = []
+        profile_relation = {}
         profile_relation["button1"] = ""
         profile_relation["button2"] = ""
         if info.context.user.is_authenticated:
