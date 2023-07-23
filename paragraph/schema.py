@@ -35,7 +35,7 @@ class Query(MeQuery, graphene.ObjectType):
         # Querying a list
         return Account.objects.get(username=username)
     
-    accounts = graphene.Field(AccountType)
+    accounts = graphene.List(AccountType)
     def resolve_accounts(root, info):
         # Querying a list
         return Account.objects.all()
