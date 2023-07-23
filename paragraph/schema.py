@@ -111,6 +111,7 @@ class Query(MeQuery, graphene.ObjectType):
         profile_relation = {}
         profile_relation["button1"] = ""
         profile_relation["button2"] = ""
+        profile_relation["utilinfo"] = ""
         if info.context.user.is_authenticated:
             user = info.context.user
             other_user = Account.objects.get(username=otheruser)
