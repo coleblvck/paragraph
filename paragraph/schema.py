@@ -29,11 +29,16 @@ class AuthMutation(graphene.ObjectType):
 
 
 
-class Query(UserQuery, MeQuery, graphene.ObjectType):
-    accounts = graphene.Field(AccountType, username=graphene.String())
-    def resolve_accounts(root, info, username):
+class Query(MeQuery, graphene.ObjectType):
+    account = graphene.Field(AccountType, username=graphene.String())
+    def resolve_account(root, info, username):
         # Querying a list
         return Account.objects.get(username=username)
+    
+    accounts = graphene.Field(AccountType)
+    def resolve_accounts(root, info):
+        # Querying a list
+        return Account.objects.all()
 
     friends = graphene.Field(FriendListType, username=graphene.String())
     def resolve_friends(root, info, username):
