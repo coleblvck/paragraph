@@ -9,7 +9,7 @@ from graphql_auth import mutations
 from graphql_auth.schema import UserQuery, MeQuery
 import graphql_jwt
 
-from friendships.utils import isfriend, isblocked, amiblocked, persontouser, usertoperson
+from friendships.utils import isfriend, isblocked, amiblocked, persontouser, usertoperson, acceptrequest, cancelrequest, declinerequest, unfriend, unblockperson, sendrequest, blockperson
 
 from .types import AccountType, FriendListType,FriendUtilitiesType ,TextMessageType
 
@@ -182,12 +182,42 @@ class SeenMutation(graphene.Mutation):
         sentmessage.save(update_fields=['edittime'])
 
         return SeenMutation(message=message)
+    
+    
+class ProfileActionMutation(graphene.Mutation):
+    class Arguments:
+        otheruser = graphene.String(required=True)
+        action = graphene.String(required=True)
+    
+    user = graphene.Field(AccountType)
+    @classmethod
+    def mutate(cls, root, info, otheruser, action):
+        currentuser = info.context.user
+        person = Account.objects.get(username=otheruser)
+        
+        if (action == "block"):
+            blockperson(currentuser, person)
+        elif (action == "add"):
+            sendrequest(currentuser, person)
+        elif (action == "unblock"):
+            unblockperson(currentuser, person)
+        elif (action == "unfriend"):
+            unfriend(currentuser, person)
+        elif (action == "decline"):
+            declinerequest(currentuser, person)
+        elif (action == "accept"):
+            acceptrequest(currentuser, person)
+        elif (action == "cancel"):
+            cancelrequest(currentuser, person)
+
+        return ProfileActionMutation(user=otheruser)
 
 class Mutation(AuthMutation, graphene.ObjectType):
 
     revoke_token = graphql_jwt.Revoke.Field()
     send_message = SendMessageMutation.Field()
     set_seen = SeenMutation.Field()
+    profile_action = ProfileActionMutation.Field()
     pass
 
 
