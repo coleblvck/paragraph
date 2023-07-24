@@ -220,7 +220,7 @@ class UpdateAccountMutation(graphene.Mutation):
     user = graphene.Field(AccountType)
     form = AccountUpdateForm
     success = graphene.Boolean()
-    errors = graphene.List()
+    errors = graphene.JSONString()
 
     class Arguments:
         username = graphene.String(required=True)
