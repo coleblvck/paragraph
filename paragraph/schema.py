@@ -8,10 +8,13 @@ from graphene_django import DjangoObjectType
 from graphql_auth import mutations
 from graphql_auth.schema import UserQuery, MeQuery
 import graphql_jwt
+from graphene_file_upload.scalars import Upload
 
 from friendships.utils import isfriend, isblocked, amiblocked, persontouser, usertoperson, acceptrequest, cancelrequest, declinerequest, unfriend, unblockperson, sendrequest, blockperson
 
 from .types import AccountType, FriendListType,FriendUtilitiesType ,TextMessageType
+
+from account.forms import AccountUpdateForm
 
 
 
@@ -212,6 +215,34 @@ class ProfileActionMutation(graphene.Mutation):
             cancelrequest(currentuser, person)
 
         return ProfileActionMutation(user=otheruser)
+    
+class UpdateAccountMutation(graphene.Mutation):
+    form = AccountUpdateForm
+
+    class Arguments:
+        username = graphene.String(required=True)
+        email = graphene.String(required=True)
+        profile_image = Upload(required=False)
+        hide_email = graphene.Boolean(required=False)
+        bio = graphene.String(required=False)
+        profile_link1_text = graphene.String(required=False)
+        profile_link1 = graphene.String(required=False)
+        profile_link2_text = graphene.String(required=False)
+        profile_link2 = graphene.String(required=False)
+
+    def mutate(self, info, profile_image=None, **data):
+        file_data = {}
+        if profile_image:
+            file_data = {"profile_image": profile_image}
+
+        form_to_mutate = UpdateAccountMutation.form(data, file_data)
+        if form_to_mutate.is_valid():
+            form_to_mutate.save()
+            return UpdateAccountMutation(success=True)
+        else:
+            return UpdateAccountMutation(
+                success=False, errors=form_to_mutate.errors.get_json_data()
+            )
 
 class Mutation(AuthMutation, graphene.ObjectType):
 
@@ -219,6 +250,7 @@ class Mutation(AuthMutation, graphene.ObjectType):
     send_message = SendMessageMutation.Field()
     set_seen = SeenMutation.Field()
     profile_action = ProfileActionMutation.Field()
+    account_update = UpdateAccountMutation.Field()
     pass
 
 
