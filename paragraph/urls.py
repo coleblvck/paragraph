@@ -24,7 +24,7 @@ from texts.views import chat, textsview, sentmessages, receivedmessages, textssc
 from friendships.views import dashboardview
 from django.views.decorators.csrf import csrf_exempt
 
-from graphene_django.views import GraphQLView
+from graphene_file_upload.django import FileUploadGraphQLView
 
 urlpatterns = [
     path('', index, name="home"),
@@ -46,7 +46,7 @@ urlpatterns = [
     path('search/<username>/', usersearch, name="usersearch"),
 
     # Graphql
-    path('graphql', csrf_exempt(GraphQLView.as_view(graphiql=True))),
+    path('graphql', csrf_exempt(FileUploadGraphQLView.as_view(graphiql=True))),
     #path('', include("graph.urls")),
 ]
 
