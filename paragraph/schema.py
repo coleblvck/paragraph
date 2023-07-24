@@ -238,7 +238,7 @@ class UpdateAccountMutation(graphene.Mutation):
         if profile_image:
             file_data = {"profile_image": profile_image}
 
-        form_to_mutate = UpdateAccountMutation.form(data, file_data)
+        form_to_mutate = UpdateAccountMutation.form(data, file_data, instance=info.context.user)
         if form_to_mutate.is_valid():
             form_to_mutate.save()
             return UpdateAccountMutation(success=True)
