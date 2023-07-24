@@ -243,9 +243,8 @@ class UpdateAccountMutation(graphene.Mutation):
             form_to_mutate.save()
             return UpdateAccountMutation(success=True)
         else:
-            errors = form_to_mutate.errors.get_json_data()
-            return UpdateAccountMutation(errors, 
-                success=False
+            return UpdateAccountMutation( 
+                success=False, errors=form_to_mutate.errors.get_json_data()
             )
 
 class Mutation(AuthMutation, graphene.ObjectType):
