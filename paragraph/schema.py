@@ -4,7 +4,7 @@ from texts.models import TextMessage
 from django.utils import timezone
 
 import graphene
-from graphene_django import DjangoObjectType
+from graphene_django.types import DjangoObjectType
 from graphql_auth import mutations
 from graphql_auth.schema import UserQuery, MeQuery
 import graphql_jwt
@@ -217,6 +217,7 @@ class ProfileActionMutation(graphene.Mutation):
         return ProfileActionMutation(user=otheruser)
     
 class UpdateAccountMutation(graphene.Mutation):
+    user = graphene.Field(AccountType)
     form = AccountUpdateForm
 
     class Arguments:
@@ -230,7 +231,7 @@ class UpdateAccountMutation(graphene.Mutation):
         profile_link2_text = graphene.String(required=False)
         profile_link2 = graphene.String(required=False)
 
-    def mutate(self, info, profile_image=None, **data):
+    def mutate(self, info, profile_image=None, **data) -> "UpdateAccountMutation":
         file_data = {}
         if profile_image:
             file_data = {"profile_image": profile_image}
