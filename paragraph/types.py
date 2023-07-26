@@ -31,10 +31,10 @@ class TextMessageType(DjangoObjectType):
 class NoteType(DjangoObjectType):
     class Meta:
         model = Note
-        fields = ("writer", "title", "body", "edittime")
+        fields = ("notekey", "writer", "title", "body", "edittime")
 
 
 class ParagraphType(DjangoObjectType):
     class Meta:
         model = Paragraph
-        fields = ("writer", "title", "body", "edittime")
+        fields = ("paragraphkey","writer", "title", "body", "edittime")
