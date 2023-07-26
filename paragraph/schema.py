@@ -335,7 +335,7 @@ class UpdateAccountMutation(graphene.Mutation):
                 success=False, errors=form_to_mutate.errors.get_json_data()
             )
 
-class Mutation(AuthMutation, graphene.ObjectType):
+class Mutation(graphene.ObjectType):
 
     revoke_token = graphql_jwt.Revoke.Field()
     send_message = SendMessageMutation.Field()
@@ -347,6 +347,7 @@ class Mutation(AuthMutation, graphene.ObjectType):
     note_delete = DeleteNoteMutation.Field()
     paragraph_create = CreateParagraphMutation.Field()
     paragraph_delete = DeleteParagraphMutation.Field()
+    login = AuthMutation.token_auth
     pass
 
 

@@ -115,6 +115,6 @@ def amiblocked(user, person):
 
 def get_user_friend_list(user):
 
-    user_friend_list = FriendList.objects.get(user=user)
+    user_friend_list = FriendList.objects.filter(user=user)
 
     return user_friend_list
