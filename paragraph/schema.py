@@ -18,8 +18,6 @@ from account.forms import AccountUpdateForm
 
 from notes.utils import get_note, get_my_notes, get_paragraph, get_my_paragraphs, get_my_paragraph_feed, create_note, update_note, delete_note, create_paragraph, delete_paragraph
 
-from notes.models import Paragraph
-
 
 
 
@@ -229,7 +227,7 @@ class CreateParagraphMutation(graphene.Mutation):
     paragraph = graphene.Field(ParagraphType)
     def mutate(root, info, title, body):
         writer = info.context.user
-        new_paragraph = Paragraph.objects.create(writer=writer, title=title, body=body)
+        new_paragraph = create_paragraph(writer, title, body)
         return CreateParagraphMutation(paragraph=new_paragraph)
 
 class DeleteParagraphMutation(graphene.Mutation):
