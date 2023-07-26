@@ -111,3 +111,10 @@ def amiblocked(user, person):
     if user in personutilitylist.userblocked.all():
         return True
     return False
+
+
+def get_user_friend_list(user):
+
+    user_friend_list = FriendList.objects.get(user=user)
+
+    return user_friend_list

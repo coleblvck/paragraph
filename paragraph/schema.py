@@ -12,9 +12,11 @@ from graphene_file_upload.scalars import Upload
 
 from friendships.utils import isfriend, isblocked, amiblocked, persontouser, usertoperson, acceptrequest, cancelrequest, declinerequest, unfriend, unblockperson, sendrequest, blockperson
 
-from .types import AccountType, FriendListType,FriendUtilitiesType ,TextMessageType
+from .types import AccountType, FriendListType,FriendUtilitiesType ,TextMessageType, NoteType, ParagraphType
 
 from account.forms import AccountUpdateForm
+
+from notes.utils import get_note, get_my_notes, get_paragraph, get_my_paragraphs, get_my_paragraph_feed, create_note, update_note, delete_note, create_paragraph, delete_paragraph
 
 
 
@@ -33,6 +35,40 @@ class AuthMutation(graphene.ObjectType):
 
 
 class Query(MeQuery, graphene.ObjectType):
+
+
+    note = graphene.Field(NoteType, pk=graphene.String())
+    def resolve_note(root, info, pk):
+        this_note = get_note(pk)
+        if this_note.writer == info.context.user:
+            return this_note
+        
+
+    mynotes = graphene.List(NoteType)
+    def resolve_mynotes(root, info):
+        me = info.context.user
+        my_notes = get_my_notes(me)
+        return my_notes
+    
+    paragraph = graphene.Field(ParagraphType, pk=graphene.String())
+    def resolve_paragraph(root, info, pk):
+        this_paragraph = get_paragraph(pk)
+        if this_paragraph.writer == info.context.user:
+            return this_paragraph
+        
+
+    myparagraphs = graphene.List(ParagraphType)
+    def resolve_myparagraphs(root, info):
+        me = info.context.user
+        my_paragraphs = get_my_paragraphs(me)
+        return my_paragraphs
+    
+    paragraphfeed = graphene.List(ParagraphType)
+    def resolve_paragraphfeed(root, info):
+        me = info.context.user
+        my_feed = get_my_paragraph_feed(me)
+        return my_feed
+
     account = graphene.Field(AccountType, username=graphene.String())
     def resolve_account(root, info, username):
         # Querying a list
@@ -149,7 +185,59 @@ class Query(MeQuery, graphene.ObjectType):
 
 
         return profile_relation
+
+"""
+Note Mutations
+"""    
+class CreateNoteMutation(graphene.Mutation):
+    class Arguments:
+        title = graphene.String(required=True)
+        body = graphene.String(required=True)
+    note = graphene.Field(NoteType)
+    def mutate(root, info, title, body):
+        writer = info.context.user
+        new_note = create_note(writer, title, body)
+        return CreateNoteMutation(note=new_note)
     
+class UpdateNoteMutation(graphene.Mutation):
+    class Arguments:
+        pk = graphene.Int(required=True)
+        title = graphene.String(required=True)
+        body = graphene.String(required=True)
+    note = graphene.Field(NoteType)
+    def mutate(root, info, pk, title, body):
+        updated_note = update_note(pk, title, body)
+        return UpdateNoteMutation(note=updated_note)
+    
+class DeleteNoteMutation(graphene.Mutation):
+    class Arguments:
+        pk = graphene.Int(required=True)
+    note = graphene.Field(NoteType)
+    def mutate(root, info, pk):
+        deleted_note = delete_note(pk)
+        return DeleteNoteMutation()
+    
+"""
+Paragraph Mutations
+""" 
+class CreateParagraphMutation(graphene.Mutation):
+    class Arguments:
+        title = graphene.String(required=True)
+        body = graphene.String(required=True)
+    paragraph = graphene.Field(ParagraphType)
+    def mutate(root, info, title, body):
+        writer = info.context.user
+        new_paragraph = create_paragraph(writer, title, body)
+        return CreateParagraphMutation(paragraph=new_paragraph)
+
+class DeleteParagraphMutation(graphene.Mutation):
+    class Arguments:
+        pk = graphene.Int(required=True)
+    paragraph = graphene.Field(ParagraphType)
+    def mutate(root, info, pk):
+        deleted_paragraph = delete_paragraph(pk)
+        return DeleteParagraphMutation()    
+
 
 
 class SendMessageMutation(graphene.Mutation):
@@ -254,6 +342,11 @@ class Mutation(AuthMutation, graphene.ObjectType):
     set_seen = SeenMutation.Field()
     profile_action = ProfileActionMutation.Field()
     account_update = UpdateAccountMutation.Field()
+    note_create = CreateNoteMutation.Field()
+    note_update = UpdateNoteMutation.Field()
+    note_delete = DeleteNoteMutation.Field()
+    paragraph_create = CreateParagraphMutation.Field()
+    paragraph_delete = DeleteParagraphMutation.Field()
     pass
 
 

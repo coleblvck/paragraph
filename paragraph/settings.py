@@ -50,6 +50,7 @@ INSTALLED_APPS = [
     'account',
     'friendships',
     'texts',
+    'notes',
 
     'django.contrib.admin',
     'django.contrib.auth',

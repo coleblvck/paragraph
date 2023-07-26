@@ -2,6 +2,7 @@ from account.models import Account
 from friendships.models import FriendList, FriendUtilities
 from texts.models import TextMessage
 from graphene_django import DjangoObjectType
+from notes.models import Note, Paragraph
 
 
 class AccountType(DjangoObjectType):
@@ -26,3 +27,14 @@ class TextMessageType(DjangoObjectType):
     class Meta:
         model = TextMessage
         fields = ("textsender", "textreceiver", "body", "edittime", "seen")
+
+class NoteType(DjangoObjectType):
+    class Meta:
+        model = Note
+        fields = ("writer", "title", "body", "edittime")
+
+
+class ParagraphType(DjangoObjectType):
+    class Meta:
+        model = Paragraph
+        fields = ("writer", "title", "body", "edittime")
