@@ -44,7 +44,7 @@ def create_paragraph(writer, title, body):
     return new_paragraph
 
 def delete_paragraph(pk):
-    paragraph_to_delete = Note.objects.get(pk=pk)
+    paragraph_to_delete = Paragraph.objects.get(pk=pk)
     paragraph_to_delete.delete()
 
 
@@ -53,11 +53,11 @@ Paragraph Get Methods
 """
 
 def get_my_paragraphs(me):
-    my_paragraphs = Note.objects.filter(writer=me).order_by('-edittime')
+    my_paragraphs = Paragraph.objects.filter(writer=me).order_by('-edittime')
     return my_paragraphs
 
 def get_paragraph(pk):
-    paragraph_to_get = Note.objects.get(pk=pk)
+    paragraph_to_get = Paragraph.objects.get(pk=pk)
     return paragraph_to_get
 
 def get_my_paragraph_feed(me):
