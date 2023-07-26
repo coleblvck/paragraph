@@ -9,12 +9,13 @@ from graphql_auth import mutations
 from graphql_auth.schema import UserQuery, MeQuery
 import graphql_jwt
 from graphene_file_upload.scalars import Upload
+from graphql_jwt.shortcuts import get_token, create_refresh_token
 
 from friendships.utils import isfriend, isblocked, amiblocked, persontouser, usertoperson, acceptrequest, cancelrequest, declinerequest, unfriend, unblockperson, sendrequest, blockperson
 
 from .types import AccountType, FriendListType,FriendUtilitiesType ,TextMessageType, NoteType, ParagraphType
 
-from account.forms import AccountUpdateForm
+from account.forms import AccountUpdateForm, RegistrationForm
 
 from notes.utils import get_note, get_my_notes, get_paragraph, get_my_paragraphs, get_my_paragraph_feed, create_note, update_note, delete_note, create_paragraph, delete_paragraph
 
@@ -334,6 +335,42 @@ class UpdateAccountMutation(graphene.Mutation):
             return UpdateAccountMutation( 
                 success=False, errors=form_to_mutate.errors.get_json_data()
             )
+        
+
+
+
+class RegisterMutation(graphene.Mutation):
+    user = graphene.Field(AccountType)
+    form = RegistrationForm
+    success = graphene.Boolean()
+    errors = graphene.JSONString()
+    token = graphene.String()
+    refresh_token = graphene.String()
+
+    class Arguments:
+        email = graphene.String(required=True)
+        username = graphene.String(required=True)
+        password1 = graphene.String(required=True)
+        password2 = graphene.String(required=True)
+
+    def mutate(self, info, **data):
+       
+
+        form_to_mutate = RegisterMutation.form(data)
+        if form_to_mutate.is_valid():
+            user = form_to_mutate.save()
+            FriendList.objects.create(user=user)
+            FriendUtilities.objects.create(user=user)
+            token = get_token(user)
+            refresh_token = create_refresh_token(user)
+            return RegisterMutation(user=user,
+                                    success=True,
+                                    token=token,
+                                    refresh_token=refresh_token)
+        else:
+            return RegisterMutation( 
+                success=False, errors=form_to_mutate.errors.get_json_data()
+            )
 
 class Mutation(graphene.ObjectType):
 
@@ -348,6 +385,7 @@ class Mutation(graphene.ObjectType):
     paragraph_create = CreateParagraphMutation.Field()
     paragraph_delete = DeleteParagraphMutation.Field()
     login = AuthMutation.token_auth
+    register = RegisterMutation.Field()
     pass
 
 
