@@ -67,7 +67,7 @@ class Query(MeQuery, graphene.ObjectType):
     def resolve_paragraphfeed(root, info):
         me = info.context.user
         my_feed = get_my_paragraph_feed(me)
-        return my_feed
+        return my_feed.annotate(date='edittime')
 
     account = graphene.Field(AccountType, username=graphene.String())
     def resolve_account(root, info, username):
