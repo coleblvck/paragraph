@@ -65,6 +65,6 @@ def get_my_paragraph_feed(me):
     my_feed_filter = Q()
     for friend in my_friend_list:
         my_feed_filter = my_feed_filter | Q(writer=friend)
-    my_feed = Paragraph.objects.filter(my_feed_filter | Q(writer=me)).order_by('-edittime')
+    my_feed = Paragraph.objects.filter(my_feed_filter).order_by('-edittime')
 
     return my_feed
