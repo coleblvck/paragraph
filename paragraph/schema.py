@@ -11,7 +11,7 @@ import graphql_jwt
 from graphene_file_upload.scalars import Upload
 from graphql_jwt.shortcuts import get_token, create_refresh_token
 
-from friendships.utils import isfriend, isblocked, amiblocked, persontouser, usertoperson, acceptrequest, cancelrequest, declinerequest, unfriend, unblockperson, sendrequest, blockperson
+from friendships.utils import isfriend, isblocked, amiblocked, persontouser, usertoperson, acceptrequest, cancelrequest, declinerequest, unfriend, unblockperson, sendrequest, blockperson, get_friend_requests
 
 from .types import AccountType, FriendListType,FriendUtilitiesType ,TextMessageType, NoteType, ParagraphType, ErrorType
 
@@ -37,6 +37,12 @@ class AuthMutation(graphene.ObjectType):
 
 class Query(MeQuery, graphene.ObjectType):
 
+
+    friendrequests = graphene.List(AccountType)
+    def resolve_friendrequests(root, info):
+        user = info.context.user
+        friendrequests = get_friend_requests(user)
+        return friendrequests
 
     note = graphene.Field(NoteType, pk=graphene.String())
     def resolve_note(root, info, pk):

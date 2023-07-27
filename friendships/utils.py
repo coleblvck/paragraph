@@ -117,4 +117,9 @@ def get_user_friend_list(user):
 
     user_friend_list = FriendList.objects.get(user=user).friends.all()
 
-    return user_friend_list
+    return 
+
+def get_friend_requests(user):
+    userutil = FriendUtilities.objects.get(user=user)
+    friendrequests = userutil.requests.all()
+    return friendrequests
