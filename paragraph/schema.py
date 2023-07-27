@@ -17,7 +17,7 @@ from .types import AccountType, FriendListType,FriendUtilitiesType ,TextMessageT
 
 from account.forms import AccountUpdateForm, RegistrationForm
 
-from notes.utils import get_note, get_my_notes, get_paragraph, get_my_paragraphs, get_my_paragraph_feed, create_note, update_note, delete_note, create_paragraph, delete_paragraph
+from notes.utils import get_note, get_my_notes, get_paragraph, get_my_paragraphs, get_paragraph_feed, create_note, update_note, delete_note, create_paragraph, delete_paragraph
 
 
 
@@ -73,7 +73,7 @@ class Query(MeQuery, graphene.ObjectType):
     paragraphfeed = graphene.List(ParagraphType)
     def resolve_paragraphfeed(root, info):
         me = info.context.user
-        my_feed = get_my_paragraph_feed(me)
+        my_feed = get_paragraph_feed(me)
         return my_feed
 
     account = graphene.Field(AccountType, username=graphene.String())
