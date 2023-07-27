@@ -13,7 +13,7 @@ from graphql_jwt.shortcuts import get_token, create_refresh_token
 
 from friendships.utils import isfriend, isblocked, amiblocked, persontouser, usertoperson, acceptrequest, cancelrequest, declinerequest, unfriend, unblockperson, sendrequest, blockperson
 
-from .types import AccountType, FriendListType,FriendUtilitiesType ,TextMessageType, NoteType, ParagraphType
+from .types import AccountType, FriendListType,FriendUtilitiesType ,TextMessageType, NoteType, ParagraphType, ErrorType
 
 from account.forms import AccountUpdateForm, RegistrationForm
 
@@ -343,7 +343,7 @@ class RegisterMutation(graphene.Mutation):
     user = graphene.Field(AccountType)
     form = RegistrationForm
     success = graphene.Boolean()
-    errors = graphene.String()
+    errors = graphene.Field(ErrorType)
     token = graphene.String()
     refresh_token = graphene.String()
 
