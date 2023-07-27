@@ -343,7 +343,7 @@ class RegisterMutation(graphene.Mutation):
     user = graphene.Field(AccountType)
     form = RegistrationForm
     success = graphene.Boolean()
-    errors = graphene.ObjectType()
+    errors = graphene.String()
     token = graphene.String()
     refresh_token = graphene.String()
 
