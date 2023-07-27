@@ -386,6 +386,7 @@ class Mutation(graphene.ObjectType):
     paragraph_delete = DeleteParagraphMutation.Field()
     login = AuthMutation.token_auth
     register = RegisterMutation.Field()
+    refresh_token = AuthMutation.refresh_token
     pass
 
 
