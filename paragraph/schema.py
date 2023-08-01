@@ -431,6 +431,7 @@ class Mutation(graphene.ObjectType):
     refresh_token = AuthMutation.refresh_token
     now_playing_update = UpdateNowPlayingMutation.Field()
     now_playing_switch = SwitchNowPlayingMutation.Field()
+    npsetup = setupNowPlaying.Field()
     pass
 
 
