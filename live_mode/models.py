@@ -9,7 +9,7 @@ class NowPlaying(models.Model):
     title = models.CharField(max_length=100, null=True, blank=True, default="")
     artist = models.CharField(max_length=100, null=True, blank=True, default="")
     album = models.CharField(max_length=100, null=True, blank=True, default="")
-    progress = models.DecimalField(null=True, blank=True, default=0.0)
+    progress = models.DecimalField(null=True, blank=True, default=0.0, decimal_places=10, max_digits=12)
     listentime = models.DateTimeField(verbose_name="listen time", auto_now=True)
 
     def __str__(self):
