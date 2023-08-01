@@ -11,7 +11,7 @@ from friendships.utils import isfriend, isblocked, amiblocked, persontouser, use
 
 from texts.models import TextMessage
 
-from live_mode.utils import get_now_playing_feed, set_now_playing_status, update_now_playing
+from live_mode.utils import get_now_playing_feed, set_now_playing_status, update_now_playing, setupNP
 
 import graphene
 from graphene_django.types import DjangoObjectType
@@ -375,7 +375,11 @@ class UpdateAccountMutation(graphene.Mutation):
                 success=False, errors=form_to_mutate.errors.get_json_data()
             )
         
-
+class setupNowPlaying(graphene.Mutation):
+    now_playing = graphene.Field(NowPlayingType)
+    def mutate(root, info):
+        setupNP()
+        
 
 
 class RegisterMutation(graphene.Mutation):

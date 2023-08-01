@@ -26,3 +26,7 @@ def utils_on_signup(user):
     FriendList.objects.create(user=user)
     FriendUtilities.objects.create(user=user)
     NowPlaying.objects.create(user=user)
+
+def all_users():
+    accounts = Account.objects.all()
+    return accounts
