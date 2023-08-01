@@ -1,7 +1,8 @@
 from friendships.utils import get_user_friend_list
 from live_mode.models import NowPlaying
 from django.db.models import Q
-from account.utils import all_users
+from account.models import Account
+
 
 def get_now_playing_feed(me):
     my_friend_list = get_user_friend_list(me)
@@ -31,7 +32,5 @@ def update_now_playing(me, title, artist, album, progress):
 
 
 def setupNP():
-    accounts = all_users()
-    for account in accounts:
-        if not NowPlaying.objects.filter(user=account).exists:
-            NowPlaying.objects.create(user=account)
+    for account in Account.objects.all():
+        NowPlaying.objects.get_or_create(user=account)
