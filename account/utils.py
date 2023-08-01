@@ -1,4 +1,6 @@
 from account.models import Account
+from friendships.models import FriendList, FriendUtilities
+from live_mode.models import NowPlaying
 
 def userList():
     accounts = Account.objects.all()
@@ -19,3 +21,8 @@ def searchusers(term):
         if term.lower() in account[0]:
             matches.append(account)
     return matches
+
+def utils_on_signup(user):
+    FriendList.objects.create(user=user)
+    FriendUtilities.objects.create(user=user)
+    NowPlaying.objects.create(user=user)

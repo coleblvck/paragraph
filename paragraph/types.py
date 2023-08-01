@@ -1,9 +1,11 @@
 from account.models import Account
 from friendships.models import FriendList, FriendUtilities
 from texts.models import TextMessage
-from graphene_django import DjangoObjectType
 from notes.models import Note, Paragraph
+from live_mode.models import NowPlaying
+
 import graphene
+from graphene_django import DjangoObjectType
 from graphene_django.utils import camelize
 
 
@@ -39,7 +41,13 @@ class NoteType(DjangoObjectType):
 class ParagraphType(DjangoObjectType):
     class Meta:
         model = Paragraph
-        fields = ("paragraphkey","writer", "title", "body", "edittime")
+        fields = ("paragraphkey", "writer", "title", "body", "edittime")
+
+class NowPlayingType(DjangoObjectType):
+    class Meta:
+        model = NowPlaying
+        fields = ("user", "status", "title", "artist", "album", "progress", "listentime")
+        
 
 
 class ErrorType(graphene.Scalar):

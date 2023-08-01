@@ -1,7 +1,17 @@
-from account.models import Account
-from friendships.models import FriendList, FriendUtilities
-from texts.models import TextMessage
 from django.utils import timezone
+
+from account.models import Account
+from account.utils import utils_on_signup
+from account.forms import AccountUpdateForm, RegistrationForm
+
+from notes.utils import get_note, get_my_notes, get_paragraph, get_my_paragraphs, get_paragraph_feed, create_note, update_note, delete_note, create_paragraph, delete_paragraph
+
+from friendships.models import FriendList, FriendUtilities
+from friendships.utils import isfriend, isblocked, amiblocked, persontouser, usertoperson, acceptrequest, cancelrequest, declinerequest, unfriend, unblockperson, sendrequest, blockperson, get_friend_requests
+
+from texts.models import TextMessage
+
+from live_mode.utils import get_now_playing_feed, set_now_playing_status, update_now_playing
 
 import graphene
 from graphene_django.types import DjangoObjectType
@@ -11,14 +21,7 @@ import graphql_jwt
 from graphene_file_upload.scalars import Upload
 from graphql_jwt.shortcuts import get_token, create_refresh_token
 
-from friendships.utils import isfriend, isblocked, amiblocked, persontouser, usertoperson, acceptrequest, cancelrequest, declinerequest, unfriend, unblockperson, sendrequest, blockperson, get_friend_requests
-
-from .types import AccountType, FriendListType,FriendUtilitiesType ,TextMessageType, NoteType, ParagraphType, ErrorType
-
-from account.forms import AccountUpdateForm, RegistrationForm
-
-from notes.utils import get_note, get_my_notes, get_paragraph, get_my_paragraphs, get_paragraph_feed, create_note, update_note, delete_note, create_paragraph, delete_paragraph
-
+from .types import AccountType, FriendListType,FriendUtilitiesType ,TextMessageType, NoteType, ParagraphType, NowPlayingType, ErrorType
 
 
 
@@ -36,6 +39,12 @@ class AuthMutation(graphene.ObjectType):
 
 
 class Query(MeQuery, graphene.ObjectType):
+
+    nowplayinglist = graphene.List(NowPlayingType)
+    def resolve_nowplayinglist(root, info):
+        user = info.context.user
+        nowPlayingFeed = get_now_playing_feed(user)
+        return nowPlayingFeed
 
 
     friendrequests = graphene.List(AccountType)
@@ -192,6 +201,30 @@ class Query(MeQuery, graphene.ObjectType):
 
 
         return profile_relation
+    
+"""
+Live Mode Mutations
+"""
+class SwitchNowPlayingMutation(graphene.Mutation):
+    nowplaying = graphene.Field(NowPlayingType)
+    class Arguments:
+        status = graphene.Boolean(required=True)
+    def mutate(root, info, status):
+        user = info.context.user
+        set_now_playing_status(user, status)
+
+class UpdateNowPlayingMutation(graphene.Mutation):
+    nowplaying = graphene.Field(NowPlayingType)
+    class Arguments:
+        title = graphene.String(required=True)
+        artist = graphene.String()
+        album = graphene.String()
+        progress = graphene.Decimal(required=True)
+    def mutate(root, info, title, artist, album, progress):
+        user = info.context.user
+        update_now_playing(user, title, artist, album, progress)
+
+
 
 """
 Note Mutations
@@ -365,8 +398,7 @@ class RegisterMutation(graphene.Mutation):
         form_to_mutate = RegisterMutation.form(data)
         if form_to_mutate.is_valid():
             user = form_to_mutate.save()
-            FriendList.objects.create(user=user)
-            FriendUtilities.objects.create(user=user)
+            utils_on_signup(user)
             token = get_token(user)
             refresh_token = create_refresh_token(user)
             return RegisterMutation(user=user,
@@ -393,6 +425,8 @@ class Mutation(graphene.ObjectType):
     login = AuthMutation.token_auth
     register = RegisterMutation.Field()
     refresh_token = AuthMutation.refresh_token
+    now_playing_update = UpdateNowPlayingMutation.Field()
+    now_playing_switch = SwitchNowPlayingMutation.Field()
     pass
 
 

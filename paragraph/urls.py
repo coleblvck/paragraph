@@ -28,7 +28,7 @@ from graphene_file_upload.django import FileUploadGraphQLView
 
 urlpatterns = [
     path('', index, name="home"),
-    path('admin/', admin.site.urls),
+    path('paragraph/admin', admin.site.urls),
     path('chat/<friend>', chat, name="chat"),
     path('texts', textsview, name="textsview"),
     path('get-started', registerview, name="register"),

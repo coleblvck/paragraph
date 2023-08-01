@@ -4,8 +4,12 @@ from django.contrib.auth import login, authenticate, logout
 from account.forms import RegistrationForm, AccountAuthenticationForm, AccountUpdateForm
 from django.contrib.auth.decorators import login_required
 from django.views.decorators.cache import never_cache
+
 from .models import Account
+from .utils import utils_on_signup
+
 from django.conf import settings
+
 from friendships.models import FriendList, FriendUtilities
 from friendships.utils import isfriend, amiblocked, isblocked, persontouser, usertoperson, sendrequest, cancelrequest, acceptrequest, declinerequest, unfriend, blockperson, unblockperson
 from django.http import JsonResponse
@@ -26,8 +30,7 @@ def registerview(request):
         form = RegistrationForm(request.POST)
         if form.is_valid():
             user = form.save()
-            FriendList.objects.create(user=user)
-            FriendUtilities.objects.create(user=user)
+            utils_on_signup(user)
 
             if user:
                 login(request, user, backend='django.contrib.auth.backends.AllowAllUsersModelBackend')

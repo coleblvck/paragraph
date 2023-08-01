@@ -52,6 +52,7 @@ INSTALLED_APPS = [
     'friendships',
     'texts',
     'notes',
+    'live_mode',
 
     'django.contrib.admin',
     'django.contrib.auth',
@@ -107,9 +108,9 @@ WSGI_APPLICATION = 'paragraph.wsgi.application'
 
 # Database
 # https://docs.djangoproject.com/en/4.2/ref/settings/#databases
-DB_NAME = "myparagraphdb"
-DB_USER = "benandcole"
-DB_PASSWORD = "legosandmusic777"
+DB_NAME = config('DB_NAME')
+DB_USER = config('DB_USER')
+DB_PASSWORD = config('DB_PASSWORD')
 DATABASES = {
     'default': {
         'ENGINE': 'django.db.backends.postgresql',
