@@ -29,8 +29,3 @@ def update_now_playing(me, title, artist, album, progress):
     now_playing.album = album
     now_playing.progress = progress
     now_playing.save(update_fields=['title', 'artist', 'album', 'progress', 'listentime'])
-
-
-def setupNP():
-    for account in Account.objects.all():
-        NowPlaying.objects.get_or_create(user=account)
