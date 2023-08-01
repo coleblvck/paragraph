@@ -31,7 +31,7 @@ def update_now_playing(me, title, artist, album, progress):
 
 
 def setupNP():
-    accounts = all_users
+    accounts = all_users()
     for account in accounts:
         if not NowPlaying.objects.filter(user=account).exists:
             NowPlaying.objects.create(user=account)
