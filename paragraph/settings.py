@@ -35,8 +35,8 @@ ALLOWED_HOSTS = ["myparagraph.space", "www.myparagraph.space"]
 
 AUTH_USER_MODEL = "account.Account"
 AUTHENTICATION_BACKENDS = (
-    'django.contrib.auth.backends.AllowAllUsersModelBackend',
-    'account.backends.CaseInsensitiveModelBackend',
+    #'django.contrib.auth.backends.AllowAllUsersModelBackend',
+    #'account.backends.CaseInsensitiveModelBackend',
 
 
     'graphql_auth.backends.GraphQLAuthBackend',
@@ -74,7 +74,7 @@ INSTALLED_APPS = [
     
     #Verify Email
     
-    'verify_email.apps.VerifyEmailConfig',
+    'email_verification.apps.EmailVerificationConfig',
 ]
 
 MIDDLEWARE = [
@@ -213,6 +213,9 @@ EMAIL_USE_SSL = True
 EMAIL_HOST_USER = config('EMAIL_USER')
 EMAIL_HOST_PASSWORD = config('EMAIL_PASS')
 DEFAULT_FROM_EMAIL = config('EMAIL_DEFAULT_FROM')
+
+LOGIN_URL = "account.views.loginview"
+
 
 
 GRAPHQL_AUTH ={

@@ -1,8 +1,9 @@
 from django.utils import timezone
+from django.contrib.auth import authenticate
 
 from account.models import Account
 from account.utils import sign_up_complete
-from account.forms import AccountUpdateForm, RegistrationForm
+from account.forms import AccountUpdateForm, RegistrationForm, AccountAuthenticationForm
 
 from notes.utils import get_note, get_my_notes, get_paragraph, get_my_paragraphs, get_paragraph_feed, create_note, update_note, delete_note, create_paragraph, delete_paragraph
 
@@ -398,6 +399,35 @@ class RegisterMutation(graphene.Mutation):
         if form_to_mutate.is_valid():
             sign_up_complete(info.context, form_to_mutate)
             return RegisterMutation(success=True)
+        else:
+            return RegisterMutation( 
+                success=False, errors=form_to_mutate.errors.get_json_data()
+            )
+        
+class LoginMutation(graphene.Mutation):
+    user = graphene.Field(AccountType)
+    form = AccountAuthenticationForm
+    success = graphene.Boolean()
+    errors = graphene.Field(ErrorType)
+    token = graphene.String()
+    refresh_token = graphene.String()
+
+    class Arguments:
+        username = graphene.String(required=True)
+        password = graphene.String(required=True)
+
+    def mutate(self, info, **data):
+       
+
+        form_to_mutate = LoginMutation.form(data)
+        if form_to_mutate.is_valid():
+            username = data["username"]
+            password = data["password"]
+            user = authenticate(username=username, password=password)
+            if user.is_active:
+                return LoginMutation(success=True)
+            else:
+                return LoginMutation(success=False)
         else:
             return RegisterMutation( 
                 success=False, errors=form_to_mutate.errors.get_json_data()
