@@ -403,35 +403,7 @@ class RegisterMutation(graphene.Mutation):
             return RegisterMutation( 
                 success=False, errors=form_to_mutate.errors.get_json_data()
             )
-        
-class LoginMutation(graphene.Mutation):
-    user = graphene.Field(AccountType)
-    form = AccountAuthenticationForm
-    success = graphene.Boolean()
-    errors = graphene.Field(ErrorType)
-    token = graphene.String()
-    refresh_token = graphene.String()
 
-    class Arguments:
-        username = graphene.String(required=True)
-        password = graphene.String(required=True)
-
-    def mutate(self, info, **data):
-       
-
-        form_to_mutate = LoginMutation.form(data)
-        if form_to_mutate.is_valid():
-            username = data["username"]
-            password = data["password"]
-            user = authenticate(username=username, password=password)
-            if user.is_active:
-                return LoginMutation(success=True)
-            else:
-                return LoginMutation(success=False)
-        else:
-            return RegisterMutation( 
-                success=False, errors=form_to_mutate.errors.get_json_data()
-            )
 
 class Mutation(graphene.ObjectType):
 
