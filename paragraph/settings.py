@@ -77,7 +77,7 @@ INSTALLED_APPS = [
     
     #Verify Email
     
-    'email_verification.apps.EmailVerificationConfig',
+    #'email_verification.apps.EmailVerificationConfig',
 ]
 
 MIDDLEWARE = [
