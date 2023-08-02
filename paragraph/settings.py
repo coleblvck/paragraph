@@ -38,8 +38,11 @@ AUTHENTICATION_BACKENDS = (
     #'django.contrib.auth.backends.AllowAllUsersModelBackend',
     #'account.backends.CaseInsensitiveModelBackend',
 
+    'django.contrib.auth.backends.ModelBackend',
+
 
     'graphql_auth.backends.GraphQLAuthBackend',
+
 )
 
 
