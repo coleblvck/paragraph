@@ -217,7 +217,7 @@ EMAIL_HOST_USER = config('EMAIL_USER')
 EMAIL_HOST_PASSWORD = config('EMAIL_PASS')
 DEFAULT_FROM_EMAIL = config('EMAIL_DEFAULT_FROM')
 
-LOGIN_URL = "/login/"
+LOGIN_URL = "loginview"
 
 
 
