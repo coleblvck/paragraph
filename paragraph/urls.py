@@ -51,7 +51,7 @@ urlpatterns = [
     
     #Verify Email
     
-    path('verify-email/', include('email_verification.urls')),
+    path('verification/', include('verify_email.urls')),
 ]
 
 
