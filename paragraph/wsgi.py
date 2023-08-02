@@ -10,12 +10,12 @@ https://docs.djangoproject.com/en/4.2/howto/deployment/wsgi/
 import os
 
 from django.core.wsgi import get_wsgi_application
-from threading import Thread
 
 os.environ.setdefault('DJANGO_SETTINGS_MODULE', 'paragraph.settings')
 
 application = get_wsgi_application()
 
+from threading import Thread
 from email_verification.views import delete_inactive_users
 
 t = Thread(target=delete_inactive_users)
