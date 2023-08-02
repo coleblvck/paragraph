@@ -47,7 +47,11 @@ urlpatterns = [
 
     # Graphql
     path('graphql', csrf_exempt(FileUploadGraphQLView.as_view(graphiql=True))),
-    #path('', include("graph.urls")),
+    
+    
+    #Verify Email
+    
+    path('verification/', include('verify_email.urls')),
 ]
 
 

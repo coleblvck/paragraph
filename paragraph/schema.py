@@ -1,7 +1,7 @@
 from django.utils import timezone
 
 from account.models import Account
-from account.utils import utils_on_signup
+from account.utils import sign_up_complete
 from account.forms import AccountUpdateForm, RegistrationForm
 
 from notes.utils import get_note, get_my_notes, get_paragraph, get_my_paragraphs, get_paragraph_feed, create_note, update_note, delete_note, create_paragraph, delete_paragraph
@@ -396,14 +396,8 @@ class RegisterMutation(graphene.Mutation):
 
         form_to_mutate = RegisterMutation.form(data)
         if form_to_mutate.is_valid():
-            user = form_to_mutate.save()
-            utils_on_signup(user)
-            token = get_token(user)
-            refresh_token = create_refresh_token(user)
-            return RegisterMutation(user=user,
-                                    success=True,
-                                    token=token,
-                                    refresh_token=refresh_token)
+            sign_up_complete(info.context, form_to_mutate)
+            return RegisterMutation(success=True)
         else:
             return RegisterMutation( 
                 success=False, errors=form_to_mutate.errors.get_json_data()

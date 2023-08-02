@@ -6,7 +6,7 @@ from django.contrib.auth.decorators import login_required
 from django.views.decorators.cache import never_cache
 
 from .models import Account
-from .utils import utils_on_signup
+from .utils import sign_up_complete
 
 from django.conf import settings
 
@@ -29,15 +29,7 @@ def registerview(request):
     if request.POST:
         form = RegistrationForm(request.POST)
         if form.is_valid():
-            user = form.save()
-            utils_on_signup(user)
-
-            if user:
-                login(request, user, backend='django.contrib.auth.backends.AllowAllUsersModelBackend')
-                destination = get_redirect_if_exists(request)
-                if destination:
-                    return redirect(destination)
-                return redirect("home")
+            sign_up_complete(request, form)
 
 
         else:

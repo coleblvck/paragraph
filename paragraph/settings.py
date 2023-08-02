@@ -70,6 +70,11 @@ INSTALLED_APPS = [
     'graphql_auth',
     'django_filters',
     'graphene_file_upload',
+
+    
+    #Verify Email
+    
+    'verify_email.apps.VerifyEmailConfig',
 ]
 
 MIDDLEWARE = [

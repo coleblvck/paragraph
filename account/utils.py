@@ -1,6 +1,7 @@
 from account.models import Account
 from friendships.models import FriendList, FriendUtilities
 from live_mode.models import NowPlaying
+from verify_email.email_handler import send_verification_email
 
 def userList():
     accounts = Account.objects.all()
@@ -30,3 +31,8 @@ def utils_on_signup(user):
 def all_users():
     accounts = Account.objects.all()
     return accounts
+
+
+def sign_up_complete(request, form):
+    inactive_user = send_verification_email(request=request, form=form)
+    utils_on_signup(inactive_user)
