@@ -30,7 +30,7 @@ def registerview(request):
         form = RegistrationForm(request.POST)
         if form.is_valid():
             sign_up_complete(request, form)
-
+            return HttpResponse("Your account has been created successfully, please check your email for your verification link.")
 
         else:
             context['registration_form'] = form
