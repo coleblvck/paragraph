@@ -12,7 +12,7 @@ from friendships.utils import isfriend, isblocked, amiblocked, persontouser, use
 
 from texts.models import TextMessage
 
-from live_mode.utils import get_now_playing_feed, set_now_playing_status, update_now_playing
+from live_mode.utils import get_now_playing_feed, set_now_playing_switch, update_now_playing
 
 import graphene
 from graphene_django.types import DjangoObjectType
@@ -209,21 +209,22 @@ Live Mode Mutations
 class SwitchNowPlayingMutation(graphene.Mutation):
     nowplaying = graphene.Field(NowPlayingType)
     class Arguments:
-        status = graphene.Boolean(required=True)
-    def mutate(root, info, status):
+        switch = graphene.Boolean(required=True)
+    def mutate(root, info, switch):
         user = info.context.user
-        set_now_playing_status(user, status)
+        set_now_playing_switch(user, switch)
 
 class UpdateNowPlayingMutation(graphene.Mutation):
     nowplaying = graphene.Field(NowPlayingType)
     class Arguments:
+        playing = graphene.Boolean(required=True)
         title = graphene.String(required=True)
         artist = graphene.String()
         album = graphene.String()
         progress = graphene.Decimal(required=True)
-    def mutate(root, info, title, artist, album, progress):
+    def mutate(root, info, playing, title, artist, album, progress):
         user = info.context.user
-        update_now_playing(user, title, artist, album, progress)
+        update_now_playing(user, playing, title, artist, album, progress)
 
 
 
@@ -375,6 +376,13 @@ class UpdateAccountMutation(graphene.Mutation):
             return UpdateAccountMutation( 
                 success=False, errors=form_to_mutate.errors.get_json_data()
             )
+        
+class RemoveProfileImageMutation(graphene.Mutation):
+    user = graphene.Field(AccountType)
+    def mutate(self, info):
+        user = info.context.user
+        user.profile_image = ""
+        user.save(update_fields=['profile_image'])
 
 
 
@@ -422,6 +430,7 @@ class Mutation(graphene.ObjectType):
     refresh_token = AuthMutation.refresh_token
     now_playing_update = UpdateNowPlayingMutation.Field()
     now_playing_switch = SwitchNowPlayingMutation.Field()
+    remove_profile_image = RemoveProfileImageMutation.Field()
     pass
 
 

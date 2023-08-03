@@ -5,7 +5,8 @@ from django.conf import settings
 
 class NowPlaying(models.Model):
     user = models.OneToOneField(settings.AUTH_USER_MODEL, on_delete=models.CASCADE)
-    status = models.BooleanField(default=False)
+    switch = models.BooleanField(default=False)
+    playing = models.BooleanField(default=False)
     title = models.CharField(max_length=100, null=True, blank=True, default="")
     artist = models.CharField(max_length=100, null=True, blank=True, default="")
     album = models.CharField(max_length=100, null=True, blank=True, default="")
