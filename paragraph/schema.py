@@ -12,7 +12,7 @@ from friendships.utils import isfriend, isblocked, amiblocked, persontouser, use
 
 from texts.models import TextMessage
 
-from live_mode.utils import get_now_playing_feed, set_now_playing_switch, update_now_playing
+from live_mode.utils import get_now_playing_feed, set_now_playing_switch, update_now_playing, get_my_now_playing
 
 import graphene
 from graphene_django.types import DjangoObjectType
@@ -40,6 +40,14 @@ class AuthMutation(graphene.ObjectType):
 
 
 class Query(MeQuery, graphene.ObjectType):
+
+    now_playing_switch_status = graphene.Boolean(otheruser=graphene.String())
+    def resolve_now_playing_switch_status(root, info):
+        if info.context.user.is_authenticated:
+            currentuser = info.context.user
+            my_now_playing = get_my_now_playing(currentuser)
+            now_playing_switch = my_now_playing.switch
+            return now_playing_switch
 
     nowplayinglist = graphene.List(NowPlayingType)
     def resolve_nowplayinglist(root, info):
