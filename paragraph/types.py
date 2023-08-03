@@ -46,7 +46,7 @@ class ParagraphType(DjangoObjectType):
 class NowPlayingType(DjangoObjectType):
     class Meta:
         model = NowPlaying
-        fields = ("user", "status", "title", "artist", "album", "progress", "listentime")
+        fields = ("user", "switch", "playing", "title", "artist", "album", "progress", "listentime")
         
 
 
