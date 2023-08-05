@@ -2,7 +2,7 @@ from django.utils import timezone
 from django.contrib.auth import authenticate
 
 from account.models import Account
-from account.utils import sign_up_complete
+from account.utils import sign_up_complete, get_default_profile_image
 from account.forms import AccountUpdateForm, RegistrationForm, AccountAuthenticationForm, ImageUpdateForm
 
 from notes.utils import get_note, get_my_notes, get_paragraph, get_my_paragraphs, get_paragraph_feed, create_note, update_note, delete_note, create_paragraph, delete_paragraph
@@ -68,7 +68,7 @@ class Query(MeQuery, graphene.ObjectType):
         blockedusers = get_blocked_users(user)
         return blockedusers
     
-    sentrequests = graphene.List(AccountType)
+    sentrequests = graphene.List(FriendUtilitiesType)
     def resolve_sentrequests(root, info):
         user = info.context.user
         sentrequests = get_sent_requests(user)
@@ -401,7 +401,7 @@ class RemoveProfileImageMutation(graphene.Mutation):
     user = graphene.Field(AccountType)
     def mutate(self, info):
         user = info.context.user
-        user.profile_image = None
+        user.profile_image = get_default_profile_image
         user.save(update_fields=['profile_image'])
 
 

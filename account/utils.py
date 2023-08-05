@@ -3,6 +3,13 @@ from friendships.models import FriendList, FriendUtilities
 from live_mode.models import NowPlaying
 from verify_email.email_handler import send_verification_email
 
+def get_profile_image_filepath(self, filename):
+    return f'profile_images/{self.pk}/{"profile_image.png"}'
+
+
+def get_default_profile_image():
+    return "/paragraph/default_profile_image.png"
+
 def userList():
     accounts = Account.objects.all()
     if accounts:

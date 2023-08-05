@@ -39,7 +39,7 @@ urlpatterns = [
     path('received_msg/<friend>', receivedmessages, name="received_msg"),
     path('textsscreen', textsscreen, name="textsscreen"),
     #
-    path('user', include('account.urls', namespace="user")),
+    path('user/', include('account.urls', namespace="user")),
     path('update', profileupdate, name="update"),
     path('dashboard', dashboardview, name="dashboardview"),
     path('userquery', userquery, name="userquery"),
