@@ -1,6 +1,5 @@
 from friendships.models import FriendList, FriendUtilities
 from texts.models import TextMessage
-from django.db.models import Q
 
 
 
@@ -132,10 +131,6 @@ def get_blocked_users(user):
 
 
 def get_sent_requests(me):
-    usersutils = FriendUtilities.objects.all()
-    sent_requests_filter = Q()
-    for user in usersutils:
-        sent_requests_filter = sent_requests_filter | (Q(me in user.requests.all()))
-    my_sent_requests = FriendUtilities.objects.filter(sent_requests_filter).all().only("user")
+    my_sent_requests = FriendUtilities.objects.filter(requests__in=me).all().only("user")
 
     return my_sent_requests
