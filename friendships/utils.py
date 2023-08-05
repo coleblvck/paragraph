@@ -1,5 +1,6 @@
 from friendships.models import FriendList, FriendUtilities
 from texts.models import TextMessage
+from django.db.models import Q
 
 
 
@@ -123,3 +124,18 @@ def get_friend_requests(user):
     userutil = FriendUtilities.objects.get(user=user)
     friendrequests = userutil.requests.all()
     return friendrequests
+
+def get_blocked_users(user):
+    userutil = FriendUtilities.objects.get(user=user)
+    blockedusers = userutil.userblocked.all()
+    return blockedusers
+
+
+def get_sent_requests(me):
+    usersutils = FriendUtilities.objects.all()
+    sent_requests_filter = Q()
+    for user in usersutils:
+        sent_requests_filter = sent_requests_filter | (Q(me in user.requests.all()))
+    my_sent_requests = FriendUtilities.objects.filter(sent_requests_filter).all().only("user")
+
+    return my_sent_requests

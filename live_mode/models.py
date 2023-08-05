@@ -16,4 +16,4 @@ class NowPlaying(models.Model):
     def __str__(self):
         return self.title
     class Meta:
-        ordering = ('-listentime',)
+        ordering = ('-listentime', '-title')

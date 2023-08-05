@@ -3,12 +3,12 @@ from django.contrib.auth import authenticate
 
 from account.models import Account
 from account.utils import sign_up_complete
-from account.forms import AccountUpdateForm, RegistrationForm, AccountAuthenticationForm
+from account.forms import AccountUpdateForm, RegistrationForm, AccountAuthenticationForm, ImageUpdateForm
 
 from notes.utils import get_note, get_my_notes, get_paragraph, get_my_paragraphs, get_paragraph_feed, create_note, update_note, delete_note, create_paragraph, delete_paragraph
 
 from friendships.models import FriendList, FriendUtilities
-from friendships.utils import isfriend, isblocked, amiblocked, persontouser, usertoperson, acceptrequest, cancelrequest, declinerequest, unfriend, unblockperson, sendrequest, blockperson, get_friend_requests
+from friendships.utils import isfriend, isblocked, amiblocked, persontouser, usertoperson, acceptrequest, cancelrequest, declinerequest, unfriend, unblockperson, sendrequest, blockperson, get_friend_requests, get_blocked_users, get_sent_requests
 
 from texts.models import TextMessage
 
@@ -61,6 +61,18 @@ class Query(MeQuery, graphene.ObjectType):
         user = info.context.user
         friendrequests = get_friend_requests(user)
         return friendrequests
+    
+    blockedusers = graphene.List(AccountType)
+    def resolve_blockedusers(root, info):
+        user = info.context.user
+        blockedusers = get_blocked_users(user)
+        return blockedusers
+    
+    sentrequests = graphene.List(AccountType)
+    def resolve_sentrequests(root, info):
+        user = info.context.user
+        sentrequests = get_sent_requests(user)
+        return sentrequests
 
     note = graphene.Field(NoteType, pk=graphene.String())
     def resolve_note(root, info, pk):
@@ -389,8 +401,32 @@ class RemoveProfileImageMutation(graphene.Mutation):
     user = graphene.Field(AccountType)
     def mutate(self, info):
         user = info.context.user
-        user.profile_image = ""
+        user.profile_image = None
         user.save(update_fields=['profile_image'])
+
+
+class UpdateProfileImageMutation(graphene.Mutation):
+    user = graphene.Field(AccountType)
+    form = ImageUpdateForm
+    success = graphene.Boolean()
+    errors = graphene.JSONString()
+
+    class Arguments:
+        profile_image = Upload(required=True)
+
+    def mutate(self, info, profile_image=None):
+        file_data = {}
+        if profile_image:
+            file_data = {"profile_image": profile_image}
+
+        form_to_mutate = UpdateProfileImageMutation.form(file_data, instance=info.context.user)
+        if form_to_mutate.is_valid():
+            form_to_mutate.save()
+            return UpdateProfileImageMutation(success=True)
+        else:
+            return UpdateProfileImageMutation( 
+                success=False, errors=form_to_mutate.errors.get_json_data()
+            )
 
 
 
@@ -439,6 +475,7 @@ class Mutation(graphene.ObjectType):
     now_playing_update = UpdateNowPlayingMutation.Field()
     now_playing_switch = SwitchNowPlayingMutation.Field()
     remove_profile_image = RemoveProfileImageMutation.Field()
+    update_profile_image = UpdateProfileImageMutation.Field()
     pass
 
 

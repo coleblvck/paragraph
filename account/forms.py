@@ -87,3 +87,18 @@ class AccountUpdateForm(forms.ModelForm):
         if commit:
             account.save()
         return account
+    
+
+
+class ImageUpdateForm(forms.ModelForm):
+
+    class Meta:
+        model = Account
+        fields = ('profile_image')    
+    
+    def save(self, commit=True):
+        account = super(ImageUpdateForm, self).save(update_fields=['profile_image'], commit=False)
+        account.profile_image = self.cleaned_data['profile_image']
+        if commit:
+            account.save(update_fields=['profile_image'])
+        return account

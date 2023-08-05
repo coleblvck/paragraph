@@ -9,7 +9,7 @@ def get_now_playing_feed(me):
     my_feed_filter = Q()
     for friend in my_friend_list:
         my_feed_filter = my_feed_filter | (Q(user=friend) & Q(switch=True))
-    now_playing_feed = NowPlaying.objects.filter(my_feed_filter | Q(user=me)).order_by('-listentime')
+    now_playing_feed = NowPlaying.objects.filter(my_feed_filter | Q(user=me)).order_by('-title')
 
     return now_playing_feed
 
