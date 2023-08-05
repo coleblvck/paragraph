@@ -131,6 +131,6 @@ def get_blocked_users(user):
 
 
 def get_sent_requests(me):
-    my_sent_requests = FriendUtilities.objects.filter(requests__in=me).all().only("user")
+    my_sent_requests = FriendUtilities.objects.filter(requests=me).all().only("user")
 
     return my_sent_requests
