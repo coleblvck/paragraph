@@ -1,8 +1,8 @@
 from django.utils import timezone
 from django.contrib.auth import authenticate
 
-from account.models import Account
-from account.utils import sign_up_complete, get_default_profile_image
+from account.models import Account, get_default_profile_image
+from account.utils import sign_up_complete
 from account.forms import AccountUpdateForm, RegistrationForm, AccountAuthenticationForm, ImageUpdateForm
 
 from notes.utils import get_note, get_my_notes, get_paragraph, get_my_paragraphs, get_paragraph_feed, create_note, update_note, delete_note, create_paragraph, delete_paragraph
