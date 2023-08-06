@@ -401,7 +401,7 @@ class RemoveProfileImageMutation(graphene.Mutation):
     user = graphene.Field(AccountType)
     def mutate(self, info):
         user = info.context.user
-        user.profile_image = get_default_profile_image
+        user.profile_image = get_default_profile_image()
         user.save(update_fields=['profile_image'])
 
 
