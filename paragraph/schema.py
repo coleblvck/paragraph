@@ -17,7 +17,6 @@ from live_mode.utils import get_now_playing_feed, set_now_playing_switch, update
 import graphene
 from graphene_django.types import DjangoObjectType
 from graphql_auth import mutations
-from graphql_auth.schema import UserQuery, MeQuery
 import graphql_jwt
 from graphene_file_upload.scalars import Upload
 from graphql_jwt.shortcuts import get_token, create_refresh_token
@@ -39,7 +38,13 @@ class AuthMutation(graphene.ObjectType):
 
 
 
-class Query(MeQuery, graphene.ObjectType):
+class Query(graphene.ObjectType):
+
+    me = graphene.Field(AccountType)
+    def resolve_me(root, info):
+        # Querying a list
+        user = info.context.user
+        return user
 
     now_playing_switch_status = graphene.Boolean()
     def resolve_now_playing_switch_status(root, info):
@@ -109,7 +114,8 @@ class Query(MeQuery, graphene.ObjectType):
     account = graphene.Field(AccountType, user_id=graphene.Int())
     def resolve_account(root, info, user_id):
         # Querying a list
-        return Account.objects.get(user_id=user_id)
+        account = Account.objects.get(user_id=user_id)
+        return account
     
     accounts = graphene.List(AccountType)
     def resolve_accounts(root, info):
