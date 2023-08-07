@@ -50,7 +50,7 @@ def get_default_profile_image():
 
 
 class Account(AbstractBaseUser):
-
+    user_id = models.AutoField(primary_key=True)
     email = models.EmailField(verbose_name="email", max_length=60, unique=True)
     username = models.CharField(max_length=30, unique=True)
     date_joined = models.DateTimeField(verbose_name="date joined", auto_now_add=True)
@@ -60,6 +60,7 @@ class Account(AbstractBaseUser):
     is_staff = models.BooleanField(default=False)
     is_superuser = models.BooleanField(default=False)
     profile_image = models.ImageField(max_length=255, upload_to=get_profile_image_filepath, null=True, blank=True, default=get_default_profile_image)
+    tagline = models.CharField(max_length=50, null=True, blank=True, default="")
     bio = models.TextField(max_length=1000, null=True, blank=True, default="")
     profile_link1_text = models.CharField(max_length=30, null=True, blank=True, default="")
     profile_link1 = models.CharField(max_length=50, null=True, blank=True, default="")

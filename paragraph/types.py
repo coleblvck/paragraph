@@ -12,7 +12,7 @@ from graphene_django.utils import camelize
 class AccountType(DjangoObjectType):
     class Meta:
         model = Account
-        fields = ("email", "username", "date_joined", "profile_image", "bio", "profile_link1_text", "profile_link1", "profile_link2_text", "profile_link2", "hide_email")
+        fields = ("user_id", "email", "username", "date_joined", "profile_image", "tagline", "bio", "profile_link1_text", "profile_link1", "profile_link2_text", "profile_link2", "hide_email")
 
 
 class FriendListType(DjangoObjectType):

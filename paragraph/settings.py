@@ -31,7 +31,7 @@ SECRET_KEY = config('SECRET_KEY')
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = False
 
-ALLOWED_HOSTS = ["api.myparagraph.space"]
+ALLOWED_HOSTS = ["app.myparagraph.space"]
 
 AUTH_USER_MODEL = "account.Account"
 AUTHENTICATION_BACKENDS = (
@@ -186,7 +186,7 @@ MEDIA_ROOT = '/home/childoftext/apps/paragraphmedia'
 
 DEFAULT_AUTO_FIELD = 'django.db.models.BigAutoField'
 
-BASE_URL = "api.myparagraph.space"
+BASE_URL = "app.myparagraph.space"
 
 
 CRISPY_TEMPLATE_PACK = "bootstrap4"

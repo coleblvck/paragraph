@@ -41,7 +41,7 @@ class AuthMutation(graphene.ObjectType):
 
 class Query(MeQuery, graphene.ObjectType):
 
-    now_playing_switch_status = graphene.Boolean(otheruser=graphene.String())
+    now_playing_switch_status = graphene.Boolean()
     def resolve_now_playing_switch_status(root, info):
         if info.context.user.is_authenticated:
             currentuser = info.context.user
@@ -106,21 +106,23 @@ class Query(MeQuery, graphene.ObjectType):
         my_feed = get_paragraph_feed(me)
         return my_feed
 
-    account = graphene.Field(AccountType, username=graphene.String())
-    def resolve_account(root, info, username):
+    account = graphene.Field(AccountType, user_id=graphene.Int())
+    def resolve_account(root, info, user_id):
         # Querying a list
-        return Account.objects.get(username=username)
+        return Account.objects.get(user_id=user_id)
     
     accounts = graphene.List(AccountType)
     def resolve_accounts(root, info):
         # Querying a list
-        return Account.objects.all()
+        all_accounts = Account.objects.all()
+        return all_accounts
 
-    friends = graphene.Field(FriendListType, username=graphene.String())
-    def resolve_friends(root, info, username):
+    friends = graphene.Field(FriendListType, user_id=graphene.Int())
+    def resolve_friends(root, info, user_id):
 
-        user = Account.objects.get(username=username)
-        return FriendList.objects.get(user=user)
+        user = Account.objects.get(user_id=user_id)
+        friends = FriendList.objects.get(user=user)
+        return friends
 
     
 
@@ -129,7 +131,8 @@ class Query(MeQuery, graphene.ObjectType):
 
         if info.context.user.is_authenticated:
             user = info.context.user
-            return FriendList.objects.get(user=user)
+            my_friends = FriendList.objects.get(user=user)
+            return my_friends
         
     
     userutilities = graphene.Field(FriendUtilitiesType)
@@ -137,15 +140,16 @@ class Query(MeQuery, graphene.ObjectType):
 
         if info.context.user.is_authenticated:
             user = info.context.user
-            return FriendUtilities.objects.get(user=user)
+            my_utilities = FriendUtilities.objects.get(user=user)
+            return my_utilities
             
     
-    message = graphene.List(TextMessageType, otheruser=graphene.String())
-    def resolve_message(root, info, otheruser):
+    message = graphene.List(TextMessageType, user_id=graphene.Int())
+    def resolve_message(root, info, user_id):
 
         if info.context.user.is_authenticated:
             user = info.context.user
-            friend = Account.objects.get(username=otheruser)
+            friend = Account.objects.get(user_id=user_id)
             sentmessage = TextMessage.objects.get(textreceiver=friend, textsender=user)
             receivedmessage = TextMessage.objects.get(textreceiver=user, textsender=friend)
             context = [receivedmessage, sentmessage]
@@ -161,36 +165,36 @@ class Query(MeQuery, graphene.ObjectType):
             return userrecievedmessages
         
 
-    seen = graphene.Boolean(otheruser=graphene.String())
-    def resolve_seen(root, info, otheruser):
+    seen = graphene.Boolean(user_id=graphene.Int())
+    def resolve_seen(root, info, user_id):
         if info.context.user.is_authenticated:
             currentuser = info.context.user
-            friend = Account.objects.get(username=otheruser)
+            friend = Account.objects.get(user_id=user_id)
             message = TextMessage.objects.get(textreceiver=friend, textsender=currentuser)
             seenstatus = message.seen
             return seenstatus
 
 
-    lastseen = graphene.String(otheruser=graphene.String())
-    def resolve_lastseen(root, info, otheruser):
+    lastseen = graphene.String(user_id=graphene.Int())
+    def resolve_lastseen(root, info, user_id):
 
         if info.context.user.is_authenticated:
             user = info.context.user
-            friend = Account.objects.get(username=otheruser)
+            friend = Account.objects.get(user_id=user_id)
             receivedmessage = TextMessage.objects.get(textreceiver=user, textsender=friend)
             seentime = timezone.localtime(receivedmessage.edittime, timezone.get_fixed_timezone(60))
             seentimeadjusted = seentime.strftime("%c")
             return seentimeadjusted
         
-    profileactions = graphene.String(otheruser= graphene.String())
-    def resolve_profileactions(root, info, otheruser):
+    profileactions = graphene.String(user_id= graphene.Int())
+    def resolve_profileactions(root, info, user_id):
         profile_relation = {}
         profile_relation["button1"] = ""
         profile_relation["button2"] = ""
         profile_relation["utilinfo"] = ""
         if info.context.user.is_authenticated:
             user = info.context.user
-            other_user = Account.objects.get(username=otheruser)
+            other_user = Account.objects.get(user_id=user_id)
             if user != other_user:
                 is_friend = isfriend(user, other_user)
                 is_blocked = isblocked(user, other_user)
@@ -304,15 +308,15 @@ class DeleteParagraphMutation(graphene.Mutation):
 
 class SendMessageMutation(graphene.Mutation):
     class Arguments:
-        friend = graphene.String(required=True)
+        friend_id = graphene.Int(required=True)
         body = graphene.String(required=True)
 
     message = graphene.Field(TextMessageType)
     @classmethod
-    def mutate(cls, root, info, friend, body):
+    def mutate(cls, root, info, friend_id, body):
 
         currentuser = info.context.user
-        person = Account.objects.get(username=friend)
+        person = Account.objects.get(user_id=friend_id)
         message = TextMessage.objects.get(textsender=currentuser, textreceiver=person)
         message.body = body
         message.seen = False
@@ -322,13 +326,13 @@ class SendMessageMutation(graphene.Mutation):
 
 class SeenMutation(graphene.Mutation):
     class Arguments:
-        friend = graphene.String(required=True)
+        friend_id = graphene.Int(required=True)
     
     message = graphene.Field(TextMessageType)
     @classmethod
-    def mutate(cls, root, info, friend):
+    def mutate(cls, root, info, friend_id):
         currentuser = info.context.user
-        person = Account.objects.get(username=friend)
+        person = Account.objects.get(user_id=friend_id)
         message = TextMessage.objects.get(textsender=person, textreceiver=currentuser)
         sentmessage = TextMessage.objects.get(textsender=currentuser, textreceiver=person)
         message.seen = True
@@ -340,14 +344,14 @@ class SeenMutation(graphene.Mutation):
     
 class ProfileActionMutation(graphene.Mutation):
     class Arguments:
-        otheruser = graphene.String(required=True)
+        user_id = graphene.Int(required=True)
         action = graphene.String(required=True)
     
     user = graphene.Field(AccountType)
     @classmethod
-    def mutate(cls, root, info, otheruser, action):
+    def mutate(cls, root, info, user_id, action):
         currentuser = info.context.user
-        person = Account.objects.get(username=otheruser)
+        person = Account.objects.get(user_id=user_id)
         
         if (action == "block"):
             blockperson(currentuser, person)
@@ -364,7 +368,7 @@ class ProfileActionMutation(graphene.Mutation):
         elif (action == "cancel"):
             cancelrequest(currentuser, person)
 
-        return ProfileActionMutation(user=otheruser)
+        return ProfileActionMutation(user=person)
     
 class UpdateAccountMutation(graphene.Mutation):
     user = graphene.Field(AccountType)
@@ -374,21 +378,18 @@ class UpdateAccountMutation(graphene.Mutation):
 
     class Arguments:
         username = graphene.String(required=True)
-        email = graphene.String(required=True)
-        profile_image = Upload(required=False)
         hide_email = graphene.Boolean(required=False)
+        tagline = graphene.String(required=False)
         bio = graphene.String(required=False)
         profile_link1_text = graphene.String(required=False)
         profile_link1 = graphene.String(required=False)
         profile_link2_text = graphene.String(required=False)
         profile_link2 = graphene.String(required=False)
 
-    def mutate(self, info, profile_image=None, **data) -> "UpdateAccountMutation":
-        file_data = {}
-        if profile_image:
-            file_data = {"profile_image": profile_image}
+    def mutate(self, info, **data) -> "UpdateAccountMutation":
+        
 
-        form_to_mutate = UpdateAccountMutation.form(data, file_data, instance=info.context.user)
+        form_to_mutate = UpdateAccountMutation.form(data, instance=info.context.user)
         if form_to_mutate.is_valid():
             form_to_mutate.save()
             return UpdateAccountMutation(success=True)
