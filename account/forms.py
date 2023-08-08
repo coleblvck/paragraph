@@ -71,7 +71,7 @@ class AccountUpdateForm(forms.ModelForm):
         raise forms.ValidationError(f"Username {username} is already in use.")
     
     def save(self, commit=True):
-        account = super(AccountUpdateForm, self).save(update_fields=['username', 'hide_email', 'tagline', 'bio', 'profile_link1_text', 'profile_link1', 'profile_link2_text', 'profile_link2'], commit=False)
+        account = super(AccountUpdateForm, self).save(commit=False)
         account.username = self.cleaned_data['username']
         account.hide_email = self.cleaned_data['hide_email']
         account.tagline = self.cleaned_data['tagline']
@@ -93,7 +93,7 @@ class ImageUpdateForm(forms.ModelForm):
         fields = ('profile_image',)    
     
     def save(self, commit=True):
-        account = super(ImageUpdateForm, self).save(update_fields=['profile_image'], commit=False)
+        account = super(ImageUpdateForm, self).save(commit=False)
         account.profile_image = self.cleaned_data['profile_image']
         if commit:
             account.save(update_fields=['profile_image'])
