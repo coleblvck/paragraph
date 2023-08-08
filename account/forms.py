@@ -90,7 +90,7 @@ class ImageUpdateForm(forms.ModelForm):
 
     class Meta:
         model = Account
-        fields = ('profile_image',)    
+        fields = ('profile_image', 'username', 'hide_email', 'tagline', 'bio', 'profile_link1_text', 'profile_link1', 'profile_link2_text', 'profile_link2')    
     
     def save(self, commit=True):
         account = super(ImageUpdateForm, self).save(commit=False)
