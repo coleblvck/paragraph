@@ -96,5 +96,5 @@ class ImageUpdateForm(forms.ModelForm):
         account = super(ImageUpdateForm, self).save(commit=False)
         account.profile_image = self.cleaned_data['profile_image']
         if commit:
-            account.save()
+            account.save(update_fields=['profile_image'])
         return account
