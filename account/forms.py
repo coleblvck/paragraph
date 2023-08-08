@@ -90,11 +90,11 @@ class ImageUpdateForm(forms.ModelForm):
 
     class Meta:
         model = Account
-        fields = ('profile_image')    
+        fields = ('profile_image',)    
     
     def save(self, commit=True):
         account = super(ImageUpdateForm, self).save(commit=False)
         account.profile_image = self.cleaned_data['profile_image']
         if commit:
-            account.save(update_fields=['profile_image'])
+            account.save()
         return account
