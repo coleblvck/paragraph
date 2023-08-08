@@ -421,18 +421,15 @@ class UpdateProfileImageMutation(graphene.Mutation):
     class Arguments:
         profile_image = Upload(required=True)
 
-    def mutate(self, info, profile_image=None, **data):
-        file_data = {}
+    def mutate(self, info, profile_image=None):
         if profile_image:
-            file_data = {"profile_image": profile_image}
-
-        form_to_mutate = UpdateProfileImageMutation.form(profile_image, instance=info.context.user)
-        if form_to_mutate.is_valid():
-            form_to_mutate.save()
+            user = info.context.user
+            user.profile_image = profile_image
+            user.save(update_fields=['profile_image'])
             return UpdateProfileImageMutation(success=True)
         else:
-            return UpdateProfileImageMutation( 
-                success=False, errors=form_to_mutate.errors.get_json_data()
+            return UpdateProfileImageMutation(
+                success=False
             )
 
 
