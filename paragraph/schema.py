@@ -424,6 +424,9 @@ class UpdateProfileImageMutation(graphene.Mutation):
     def mutate(self, info, profile_image=None):
         file_data = {}
         if profile_image:
+            user = info.context.user
+            user.profile_image = profile_image
+            user.save(update_fields=['profile_image'])
             file_data = {"profile_image": profile_image}
 
         form_to_mutate = UpdateProfileImageMutation.form(file_data, instance=info.context)
