@@ -14,6 +14,8 @@ from texts.models import TextMessage
 
 from live_mode.utils import get_now_playing_feed, set_now_playing_switch, update_now_playing, get_my_now_playing
 
+from graph.utils import send_test_message
+
 import graphene
 from graphene.types.generic import GenericScalar
 from graphene_django.types import DjangoObjectType
@@ -231,6 +233,14 @@ class Query(graphene.ObjectType):
 
         return profile_relation
     
+#Test Mutation
+class SendTestMutation(graphene.Mutation):
+    sent = graphene.Boolean()
+    def mutate(root, info):
+        report = send_test_message()
+        return report
+
+
 """
 Live Mode Mutations
 """
@@ -478,6 +488,7 @@ class Mutation(graphene.ObjectType):
     now_playing_switch = SwitchNowPlayingMutation.Field()
     remove_profile_image = RemoveProfileImageMutation.Field()
     update_profile_image = UpdateProfileImageMutation.Field()
+    send_test_notification = SendTestMutation.Field()
     pass
 
 
