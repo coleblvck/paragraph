@@ -189,7 +189,7 @@ class Query(graphene.ObjectType):
             seentimeadjusted = seentime.strftime("%c")
             return seentimeadjusted
         
-    profileactions = graphene.Field(user_id= graphene.Int())
+    profileactions = dict(user_id= graphene.Int())
     def resolve_profileactions(root, info, user_id):
         profile_relation = {}
         profile_relation["button1"] = ""
