@@ -66,7 +66,7 @@ INSTALLED_APPS = [
 
 
     'graphene_django',
-    'graphql_jwt.refresh_token.apps.RefreshToken',
+    'graphql_jwt.refresh_token.apps.RefreshTokenConfig',
     'django_filters',
     'graphene_file_upload',
 
