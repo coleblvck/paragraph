@@ -66,7 +66,6 @@ INSTALLED_APPS = [
 
 
     'graphene_django',
-    'graphene_django.views',
     'django_filters',
     'graphene_file_upload',
 
