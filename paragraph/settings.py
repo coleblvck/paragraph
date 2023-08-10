@@ -41,8 +41,6 @@ AUTHENTICATION_BACKENDS = (
     'django.contrib.auth.backends.ModelBackend',
 
 
-    'graphql_auth.backends.GraphQLAuthBackend',
-
 )
 
 
@@ -68,7 +66,6 @@ INSTALLED_APPS = [
 
     'graphene_django',
     'graphql_jwt.refresh_token.apps.RefreshTokenConfig',
-    'graphql_auth',
     'django_filters',
     'graphene_file_upload',
 
@@ -200,11 +197,6 @@ GRAPHENE = {
 
 
 GRAPHQL_JWT = {
-    "JWT_ALLOW_ANY_CLASSES": [
-        "graphql_auth.mutations.Register",
-        "graphql_auth.mutations.VerifyAccount",
-        "graphql_auth.mutations.ObtainJSONWebToken",
-    ],
     "JWT_VERIFY_EXPIRATION": True,
     "JWT_LONG_RUNNING_REFRESH_TOKEN": True,
     "JWT_REFRESH_EXPIRED_HANDLER": lambda orig_iat, context: False,
@@ -221,17 +213,3 @@ DEFAULT_FROM_EMAIL = config('EMAIL_DEFAULT_FROM')
 
 LOGIN_URL = "loginview"
 
-
-
-GRAPHQL_AUTH ={
-    'UPDATE_MUTATION_FIELDS': [
-    "email",
-    "username",
-    "bio",
-    ],
-
-    'REGISTER_MUTATION_FIELDS': [
-    "email",
-    "username",
-    ],
-}
