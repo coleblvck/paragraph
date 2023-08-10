@@ -15,6 +15,7 @@ from texts.models import TextMessage
 from live_mode.utils import get_now_playing_feed, set_now_playing_switch, update_now_playing, get_my_now_playing
 
 import graphene
+from graphene.types.generic import GenericScalar
 from graphene_django.types import DjangoObjectType
 import graphql_jwt
 from graphene_file_upload.scalars import Upload
@@ -189,7 +190,7 @@ class Query(graphene.ObjectType):
             seentimeadjusted = seentime.strftime("%c")
             return seentimeadjusted
         
-    profileactions = dict(user_id= graphene.Int())
+    profileactions = GenericScalar(user_id= graphene.Int())
     def resolve_profileactions(root, info, user_id):
         profile_relation = {}
         profile_relation["button1"] = ""
