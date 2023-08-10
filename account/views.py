@@ -46,7 +46,7 @@ def logoutview(request):
 
 
 
-def loginview(request):
+def loginview():
     
     return redirect("https://web.myparagraph.space")
 
