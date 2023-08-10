@@ -64,8 +64,6 @@ INSTALLED_APPS = [
     'django.contrib.messages',
     'django.contrib.staticfiles',
     'channels',
-    'crispy_forms',
-    'crispy_bootstrap4',
 
 
     'graphene_django',
@@ -189,7 +187,6 @@ DEFAULT_AUTO_FIELD = 'django.db.models.BigAutoField'
 BASE_URL = "app.myparagraph.space"
 
 
-CRISPY_TEMPLATE_PACK = "bootstrap4"
 
 
 DATA_UPLOAD_MAX_MEMORY_SIZE = 10485760 # 10 * 1024 * 1024 (10MB)

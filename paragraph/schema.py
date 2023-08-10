@@ -16,7 +16,6 @@ from live_mode.utils import get_now_playing_feed, set_now_playing_switch, update
 
 import graphene
 from graphene_django.types import DjangoObjectType
-from graphql_auth import mutations
 import graphql_jwt
 from graphene_file_upload.scalars import Upload
 from graphql_jwt.shortcuts import get_token, create_refresh_token
@@ -28,11 +27,9 @@ from .types import AccountType, FriendListType,FriendUtilitiesType ,TextMessageT
 
 
 class AuthMutation(graphene.ObjectType):
-    register = mutations.Register.Field()
-    verify_account = mutations.VerifyAccount.Field()
-    token_auth = mutations.ObtainJSONWebToken.Field()
-    update_account = mutations.UpdateAccount.Field()
-    refresh_token = mutations.RefreshToken.Field()
+    token_auth = graphql_jwt.relay.ObtainJSONWebToken.Field()
+    verify_token = graphql_jwt.relay.Verify.Field()
+    refresh_token = graphql_jwt.relay.Refresh.Field()
 
 
 
@@ -463,7 +460,7 @@ class RegisterMutation(graphene.Mutation):
 
 class Mutation(graphene.ObjectType):
 
-    revoke_token = graphql_jwt.Revoke.Field()
+    revoke_token = graphql_jwt.relay.Revoke.Field()
     send_message = SendMessageMutation.Field()
     set_seen = SeenMutation.Field()
     profile_action = ProfileActionMutation.Field()
