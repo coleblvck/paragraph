@@ -47,39 +47,8 @@ def logoutview(request):
 
 
 def loginview(request):
-
-    context = {}
-
-    user = request.user
-    if user.is_authenticated:
-         return redirect("home")
     
-    destination = get_redirect_if_exists(request)
-    if request.POST:
-        form = AccountAuthenticationForm(request.POST)
-        if form.is_valid():
-            username = request.POST['username']
-            password = request.POST['password']
-            user = authenticate(username=username, password=password)
-            if user:
-                login(request, user)
-                destination = get_redirect_if_exists(request)
-                if destination:
-                    return redirect(destination)
-                return redirect("home")
-        else:
-            context['login_form'] = form
-        
-    return render(request, 'account/login.html', context)
-
-
-def get_redirect_if_exists(request):
-    redirect = None
-    if request.GET:
-         if request.GET.get("next"):
-            redirect = str(request.GET.get("next"))
-    
-    return redirect
+    return redirect("https://web.myparagraph.space")
 
 
 
