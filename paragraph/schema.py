@@ -14,7 +14,7 @@ from texts.models import TextMessage
 
 from live_mode.utils import get_now_playing_feed, set_now_playing_switch, update_now_playing, get_my_now_playing
 
-from graph.utils import send_test_message
+from graph.utils import send_test_message, update_fcm_token, new_message_notification
 
 import graphene
 from graphene.types.generic import GenericScalar
@@ -237,8 +237,17 @@ class Query(graphene.ObjectType):
 class SendTestMutation(graphene.Mutation):
     sent = graphene.Boolean()
     def mutate(root, info):
-        report = send_test_message()
-        return report
+        send_test_message()
+        return True
+    
+
+class updateFCMTokenMutation(graphene.Mutation):
+    class Arguments:
+        token = graphene.String(required=True)
+    def mutate(root, info, token):
+        user = info.context.user
+        update_fcm_token(user, token)
+
 
 
 """
@@ -335,6 +344,7 @@ class SendMessageMutation(graphene.Mutation):
         message.body = body
         message.seen = False
         message.save(update_fields=['body', 'seen', 'edittime'])
+        new_message_notification(currentuser, person)
 
         return SendMessageMutation(message=message)
 
