@@ -14,7 +14,7 @@ from texts.models import TextMessage
 
 from live_mode.utils import get_now_playing_feed, set_now_playing_switch, update_now_playing, get_my_now_playing
 
-from graph.utils import send_test_message, update_fcm_token, new_message_notification
+from graph.utils import send_test_message, update_fcm_token, new_message_notification, new_request_notification
 
 import graphene
 from graphene.types.generic import GenericScalar
@@ -393,6 +393,7 @@ class ProfileActionMutation(graphene.Mutation):
             blockperson(currentuser, person)
         elif (action == "add"):
             sendrequest(currentuser, person)
+            new_request_notification(currentuser, person)
         elif (action == "unblock"):
             unblockperson(currentuser, person)
         elif (action == "unfriend"):

@@ -15,6 +15,31 @@ def update_fcm_token(user, token):
     fcm_token.save()
 
 
+
+def new_request_notification(sender, sendee):
+    sender_username = sender.username
+    body = f"New request from {sender_username}"
+    title = "psst!"
+
+
+    fcm_token_object, fcm_created = FCMToken.objects.get_or_create(user=sendee)
+    last_sent_timing, created = NotificationTiming.objects.get_or_create(fcm_token=fcm_token_object, sender=sender)
+    registration_token = fcm_token_object.token
+
+    if created:
+        send_message(registration_token, title, body)
+    
+    else:
+        last_sent_time = last_sent_timing.last_notify_time
+
+        current_moment = timezone.now()
+        delta = current_moment - last_sent_time
+        if delta.total_seconds() > 20:
+            last_sent_timing.save(update_fields=['last_notify_time'])
+            send_message(registration_token, title, body)
+
+
+
 def new_message_notification(sender, sendee):
     sender_username = sender.username
     body = f"You've been tapped by {sender_username}"
@@ -33,7 +58,7 @@ def new_message_notification(sender, sendee):
 
         current_moment = timezone.now()
         delta = current_moment - last_sent_time
-        if delta.total_seconds() > 15:
+        if delta.total_seconds() > 20:
             last_sent_timing.save(update_fields=['last_notify_time'])
             send_message(registration_token, title, body)
 
