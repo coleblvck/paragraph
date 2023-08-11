@@ -9,7 +9,7 @@ paragraph_logo_small ="https://app.myparagraph.space/media/paragraph/logos/logo_
 
 
 def update_fcm_token(user, token):
-    fcm_token = FCMToken.objects.get_or_create(user=user)
+    fcm_token, created = FCMToken.objects.get_or_create(user=user)
     fcm_token.token = token
     fcm_token.save()
 
@@ -20,7 +20,7 @@ def new_message_notification(sender, sendee):
     title = "pssssttt!"
 
 
-    fcm_token_object = FCMToken.objects.get_or_create(user=sendee)
+    fcm_token_object, fcm_created = FCMToken.objects.get_or_create(user=sendee)
     last_sent_timing, created = NotificationTiming.objects.get_or_create(fcm_token=fcm_token_object, sender=sender)
     registration_token = fcm_token_object.token
 
