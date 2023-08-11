@@ -13,7 +13,7 @@ class FCMToken(models.Model):
 
 class NotificationTiming(models.Model):
     fcm_token = models.ForeignKey(FCMToken, on_delete=models.CASCADE, db_index=True)
-    sender = models.ManyToManyField(settings.AUTH_USER_MODEL)
+    sender = models.ForeignKey(settings.AUTH_USER_MODEL, on_delete=models.CASCADE)
     last_notify_time = models.DateTimeField(verbose_name="last notify time", auto_now=True)
 
 
