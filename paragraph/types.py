@@ -3,10 +3,16 @@ from friendships.models import FriendList, FriendUtilities
 from texts.models import TextMessage
 from notes.models import Note, Paragraph
 from live_mode.models import NowPlaying
+from mediashare.models import SharedMedia
 
 import graphene
 from graphene_django import DjangoObjectType
 from graphene_django.utils import camelize
+
+class SharedMediaType(DjangoObjectType):
+    class Meta:
+        model = SharedMedia
+        fields = ("mediasender", "mediareceiver", "media", "edittime", "seen")
 
 
 class AccountType(DjangoObjectType):

@@ -16,6 +16,8 @@ from live_mode.utils import get_now_playing_feed, set_now_playing_switch, update
 
 from graph.utils import send_test_message, update_fcm_token, new_message_notification, new_request_notification
 
+from mediashare.utils import upload_media, delete_media, get_media
+
 import graphene
 from graphene.types.generic import GenericScalar
 from graphene_django.types import DjangoObjectType
@@ -23,7 +25,7 @@ import graphql_jwt
 from graphene_file_upload.scalars import Upload
 from graphql_jwt.shortcuts import get_token, create_refresh_token
 
-from .types import AccountType, FriendListType,FriendUtilitiesType ,TextMessageType, NoteType, ParagraphType, NowPlayingType, ErrorType
+from .types import AccountType, FriendListType,FriendUtilitiesType ,TextMessageType, NoteType, ParagraphType, NowPlayingType, SharedMediaType, ErrorType
 
 
 
@@ -39,6 +41,20 @@ class AuthMutation(graphene.ObjectType):
 
 
 class Query(graphene.ObjectType):
+
+    sent_media = graphene.Field(SharedMediaType, friend_id=graphene.Int())
+    def resolve_sent_media(root, info, friend_id):
+        currentuser = info.context.user
+        person = Account.objects.get(user_id=friend_id)
+        media_to_get = get_media(currentuser, person)
+        return media_to_get
+    
+    received_media = graphene.Field(SharedMediaType, friend_id=graphene.Int())
+    def resolve_received_media(root, info, friend_id):
+        currentuser = info.context.user
+        person = Account.objects.get(user_id=friend_id)
+        media_to_get = get_media(person, currentuser)
+        return media_to_get
 
     me = graphene.Field(AccountType)
     def resolve_me(root, info):
@@ -341,6 +357,33 @@ class DeleteParagraphMutation(graphene.Mutation):
         return DeleteParagraphMutation()    
 
 
+class SendMediaMutation(graphene.Mutation):
+    class Arguments:
+        friend_id = graphene.Int(required=True)
+        media = Upload(required=True)
+
+    media = graphene.Field(SharedMediaType)
+    @classmethod
+    def mutate(cls, root, info, friend_id, media=None):
+
+        currentuser = info.context.user
+        person = Account.objects.get(user_id=friend_id)
+        if media:
+            upload_media(currentuser, person, media)
+
+class DeleteMediaMutation(graphene.Mutation):
+    class Arguments:
+        friend_id = graphene.Int(required=True)
+
+    media = graphene.Field(SharedMediaType)
+    @classmethod
+    def mutate(cls, root, info, friend_id):
+
+        currentuser = info.context.user
+        person = Account.objects.get(user_id=friend_id)
+        delete_media(currentuser, person)
+
+
 
 class SendMessageMutation(graphene.Mutation):
     class Arguments:
@@ -513,6 +556,8 @@ class Mutation(graphene.ObjectType):
     update_profile_image = UpdateProfileImageMutation.Field()
     update_fcm = updateFCMTokenMutation.Field()
     tap_user = SendTapMutation.Field()
+    send_media = SendMediaMutation.Field()
+    delete_sent_media = DeleteMediaMutation.Field()
     send_test_notification = SendTestMutation.Field()
     pass
 

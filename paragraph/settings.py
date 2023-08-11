@@ -50,22 +50,27 @@ AUTHENTICATION_BACKENDS = (
 
 INSTALLED_APPS = [
 
+    #My Apps
     'graph',
     'account',
     'friendships',
     'texts',
     'notes',
     'live_mode',
+    'mediashare',
 
+    #Default Apps
     'django.contrib.admin',
     'django.contrib.auth',
     'django.contrib.contenttypes',
     'django.contrib.sessions',
     'django.contrib.messages',
     'django.contrib.staticfiles',
+
+    #Channels
     'channels',
 
-
+    #Graphene
     'graphene_django',
     'graphql_jwt.refresh_token.apps.RefreshTokenConfig',
     'django_filters',
@@ -73,10 +78,8 @@ INSTALLED_APPS = [
 
     #Firebase cloud messaging(push)
     'fcm_django',
-
     
-    #Verify Email
-    
+    #Verify Email    
     'verify_email.apps.VerifyEmailConfig',
 
     #Cors
