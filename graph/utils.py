@@ -17,8 +17,8 @@ def update_fcm_token(user, token):
 
 def new_message_notification(sender, sendee):
     sender_username = sender.username
-    body = f"New message from {sender_username}"
-    title = "pssssttt!"
+    body = f"New bing from {sender_username}"
+    title = "psst!"
 
 
     fcm_token_object, fcm_created = FCMToken.objects.get_or_create(user=sendee)
@@ -41,7 +41,7 @@ def new_message_notification(sender, sendee):
 def send_message(messagetoken, title, body):
     if messagetoken != None and messagetoken != "":
         message = Message(
-            notification=Notification(title=title, body=body, image=paragraph_logo_small),
+            notification=Notification(title=title, body=body),
             token=messagetoken,
             )
         response = send(message)
