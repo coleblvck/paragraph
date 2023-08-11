@@ -498,6 +498,7 @@ class Mutation(graphene.ObjectType):
     now_playing_switch = SwitchNowPlayingMutation.Field()
     remove_profile_image = RemoveProfileImageMutation.Field()
     update_profile_image = UpdateProfileImageMutation.Field()
+    update_fcm = updateFCMTokenMutation.Field()
     send_test_notification = SendTestMutation.Field()
     pass
 
