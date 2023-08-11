@@ -238,10 +238,10 @@ class SendTestMutation(graphene.Mutation):
     sent = graphene.Boolean()
     def mutate(root, info):
         send_test_message()
-        return True
     
 
 class updateFCMTokenMutation(graphene.Mutation):
+    fcm_token = graphene.String()
     class Arguments:
         token = graphene.String(required=True)
     def mutate(root, info, token):
