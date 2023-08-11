@@ -248,11 +248,11 @@ class updateFCMTokenMutation(graphene.Mutation):
         user = info.context.user
         update_fcm_token(user, token)
 
-class SendBingMutation(graphene.Mutation):
+class SendTapMutation(graphene.Mutation):
     class Arguments:
         friend_id = graphene.Int(required=True)
 
-    bing = graphene.String()
+    tap = graphene.String()
     @classmethod
     def mutate(cls, root, info, friend_id):
 
@@ -260,7 +260,7 @@ class SendBingMutation(graphene.Mutation):
         person = Account.objects.get(user_id=friend_id)
         new_message_notification(currentuser, person)
 
-        return SendBingMutation(bing="Bing!")
+        return SendTapMutation(tap="tap tap!")
 
 
 """
@@ -511,7 +511,7 @@ class Mutation(graphene.ObjectType):
     remove_profile_image = RemoveProfileImageMutation.Field()
     update_profile_image = UpdateProfileImageMutation.Field()
     update_fcm = updateFCMTokenMutation.Field()
-    bing_user = SendBingMutation.Field()
+    tap_user = SendTapMutation.Field()
     send_test_notification = SendTestMutation.Field()
     pass
 

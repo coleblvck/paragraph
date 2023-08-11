@@ -17,7 +17,7 @@ def update_fcm_token(user, token):
 
 def new_message_notification(sender, sendee):
     sender_username = sender.username
-    body = f"New bing from {sender_username}"
+    body = f"You've been tapped by {sender_username}"
     title = "psst!"
 
 
