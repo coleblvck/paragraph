@@ -66,7 +66,7 @@ def new_message_notification(sender, sendee):
 def send_message(messagetoken, title, body):
     if messagetoken != None and messagetoken != "":
         message = Message(
-            notification=Notification(title=title, body=body),
+            notification=Notification(title=title, body=body, image=""),
             token=messagetoken,
             )
         response = send(message)
