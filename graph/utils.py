@@ -1,6 +1,7 @@
 from .models import FCMToken, NotificationTiming
 from firebase_admin.messaging import Message, Notification, send
 import datetime
+from django.utils import timezone
 
 
 
@@ -30,7 +31,7 @@ def new_message_notification(sender, sendee):
     else:
         last_sent_time = last_sent_timing.last_notify_time
 
-        current_moment = datetime.datetime.now()
+        current_moment = timezone.now()
         delta = current_moment - last_sent_time
         if delta.total_seconds() > 15:
             last_sent_timing.save(update_fields=['last_notify_time'])
