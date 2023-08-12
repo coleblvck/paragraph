@@ -5,13 +5,7 @@ from datetime import date
 # Create your models here.
 
 def get_sharedmedia_filepath(self, filename):
-    today = date.today()
-    return f'shared_media/{self.mediasender.pk}/{0}/{1}/{2}/{3}'.format(
-        today.year,
-        today.month,
-        today.day,
-        filename
-    )
+    return f'shared_media/{self.mediasender.pk}/%Y/%m/%d/'
 
 class SharedMedia(models.Model):
     mediasender = models.ForeignKey(settings.AUTH_USER_MODEL, on_delete=models.CASCADE, related_name="mediasender")
