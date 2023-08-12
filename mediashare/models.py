@@ -10,7 +10,7 @@ def get_sharedmedia_filepath(self, filename):
 class SharedMedia(models.Model):
     mediasender = models.ForeignKey(settings.AUTH_USER_MODEL, on_delete=models.CASCADE, related_name="mediasender")
     mediareceiver = models.ForeignKey(settings.AUTH_USER_MODEL, on_delete=models.CASCADE, related_name="mediareceiver")
-    media = models.FileField(upload_to=get_sharedmedia_filepath, null=True, blank=True)
+    media = models.FileField(upload_to="shared_media/", null=True, blank=True)
     edittime = models.DateTimeField(verbose_name="edit time", auto_now=True)
     seen = models.BooleanField(default=False)
 
