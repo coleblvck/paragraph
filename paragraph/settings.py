@@ -84,6 +84,10 @@ INSTALLED_APPS = [
 
     #Cors
     'corsheaders',
+
+    #Cleanup
+    'django_unused_media',
+    'django_cleanup.apps.CleanupConfig',
 ]
 
 MIDDLEWARE = [
