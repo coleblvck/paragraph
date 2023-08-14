@@ -1,6 +1,7 @@
 from django.db import models
 from django.contrib.auth.models import AbstractBaseUser, BaseUserManager
 from friendships.models import FriendList, FriendUtilities
+from .utils import utils_on_signup
 
 # Create your models here.
 
@@ -22,8 +23,8 @@ class MyAccountManager(BaseUserManager):
         user.set_password(password)
         user.save(using=self._db)
 
-        FriendList.objects.create(user=user)
-        FriendUtilities.objects.create(user=user)
+        utils_on_signup(user)
+
         return user
     
     def create_superuser(self, email, username, password):
