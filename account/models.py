@@ -1,9 +1,15 @@
 from django.db import models
 from django.contrib.auth.models import AbstractBaseUser, BaseUserManager
 from friendships.models import FriendList, FriendUtilities
-from .utils import utils_on_signup
+from live_mode.models import NowPlaying
 
 # Create your models here.
+
+
+def utils_on_signup(user):
+    FriendList.objects.create(user=user)
+    FriendUtilities.objects.create(user=user)
+    NowPlaying.objects.create(user=user)
 
 
 # create a new user
