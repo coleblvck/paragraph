@@ -29,7 +29,9 @@ def password_reset_secondflow(token, password):
         token_validity = PasswordResetTokenGenerator().check_token(user, token)
         if token_validity:
             user.set_password(password)
+            user.save()
             token_model.token = None
+            token_model.save()
             return (True, "Success! Password set successfully")
         else:
             return (False, "Invalid Token")
