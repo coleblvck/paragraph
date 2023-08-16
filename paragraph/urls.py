@@ -32,7 +32,7 @@ urlpatterns = [
     # API Views
 
     # Graphql
-    path('graphql', csrf_exempt(FileUploadGraphQLView.as_view(graphiql=True))),
+    path('graphql', csrf_exempt(FileUploadGraphQLView.as_view(graphiql=False))),
     
     
     #Verify Email

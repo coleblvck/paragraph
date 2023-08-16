@@ -627,6 +627,6 @@ schema = ValidatingSchema(
     query=Query,
     mutation=Mutation,
     validation_rules=(
-        *filter(None, (NoSchemaIntrospectionCustomRule if settings.DEBUG else None,)), #not 
+        *filter(None, (NoSchemaIntrospectionCustomRule if not settings.DEBUG else None,)), #not 
     ),
 )
