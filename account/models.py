@@ -97,4 +97,4 @@ class Account(AbstractBaseUser):
 
 class PasswordToken(models.Model):
     token_user = models.ForeignKey(Account, on_delete=models.CASCADE, related_name="tokenuser")
-    token = models.TextField(max_length=1000, null=False, blank=True, default="")
+    token = models.TextField(max_length=1000, null=True, blank=True, default="")
