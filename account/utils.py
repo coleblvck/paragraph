@@ -8,6 +8,7 @@ def password_reset_firstflow(email):
     user = Account.objects.filter(email=email)
     if user.exists():
         #GenerateToken
+        user=user[0]
         token = PasswordResetTokenGenerator().make_token(user=user)
         token_model, created = PasswordToken.objects.get_or_create(token_user=user)
         token_model.token = token
@@ -23,6 +24,7 @@ def password_reset_firstflow(email):
 def password_reset_secondflow(token, password):
     token_model = PasswordToken.objects.filter(token=token)
     if token_model.exists():
+        token_model = token_model[0]
         user = token_model.token_user
         token_validity = PasswordResetTokenGenerator().check_token(user, token)
         if token_validity:
