@@ -25,7 +25,39 @@ import graphql_jwt
 from graphene_file_upload.scalars import Upload
 from graphql_jwt.shortcuts import get_token, create_refresh_token
 
+
+#Validation Rule
+from graphql import ExecutionResult, parse, validate
+from graphql.validation import NoSchemaIntrospectionCustomRule
+
+
+from django.conf import settings
+
 from .types import AccountType, FriendListType,FriendUtilitiesType ,TextMessageType, NoteType, ParagraphType, NowPlayingType, SharedMediaType, ErrorType
+
+
+
+
+
+class ValidatingSchema(graphene.Schema):
+    def __init__(self, *args, validation_rules=(), **kwargs):
+        super().__init__(*args, **kwargs)
+        self.validation_rules = validation_rules
+
+    def execute(self, *args, **kwargs):
+        return self.validate(*args, **kwargs) or super().execute(*args, **kwargs)
+
+    async def execute_async(self, *args, **kwargs):
+        return self.validate(*args, **kwargs) or await super().execute_async(*args, **kwargs)
+
+    def validate(self, *args, **kwargs):
+        if query := (kwargs.get("source") or kwargs.get("request_string")):
+            errors = validate(self.graphql_schema, parse(query), rules=self.validation_rules, max_errors=3)
+            if errors:
+                return ExecutionResult(errors=errors)
+
+
+
 
 
 
@@ -590,4 +622,11 @@ class Mutation(graphene.ObjectType):
 
 
 
-schema = graphene.Schema(query=Query, mutation=Mutation)
+
+schema = ValidatingSchema(
+    query=Query,
+    mutation=Mutation,
+    validation_rules=(
+        *filter(None, (NoSchemaIntrospectionCustomRule if not settings.DEBUG else None,)),
+    ),
+)
