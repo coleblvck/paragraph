@@ -2,7 +2,7 @@ from django.utils import timezone
 from django.contrib.auth import authenticate
 
 from account.models import Account, get_default_profile_image
-from account.utils import sign_up_complete
+from account.utils import sign_up_complete, password_reset_firstflow, password_reset_secondflow
 from account.forms import AccountUpdateForm, RegistrationForm, AccountAuthenticationForm, ImageUpdateForm
 
 from notes.utils import get_note, get_my_notes, get_paragraph, get_my_paragraphs, get_paragraph_feed, create_note, update_note, delete_note, create_paragraph, delete_paragraph
@@ -534,6 +534,30 @@ class RegisterMutation(graphene.Mutation):
                 success=False, errors=form_to_mutate.errors.get_json_data()
             )
 
+class RequestPasswordTokenMutation(graphene.Mutation):
+    success = graphene.Boolean()
+    class Arguments:
+        email = graphene.String(required=True)
+    def mutate(self, info, email):
+        password_reset_firstflow(email)
+        return RequestPasswordTokenMutation(success=True)
+    
+class ResetPasswordMutation(graphene.Mutation):
+    success = graphene.Boolean()
+    message = graphene.String()
+    class Arguments:
+        token = graphene.String(required=True)
+        password1 = graphene.String(required=True)
+        password2 = graphene.String(required=True)
+    def mutate(self, info, token, password1, password2):
+        if password1 != password2:
+            success = False
+            message = "Passwords do not match"
+            return ResetPasswordMutation(success=success, message=message)
+        else:
+            success, message = password_reset_secondflow(token, password1)
+            return ResetPasswordMutation(success=success, message=message)
+
 
 class Mutation(graphene.ObjectType):
 
@@ -559,6 +583,8 @@ class Mutation(graphene.ObjectType):
     send_media = SendMediaMutation.Field()
     delete_sent_media = DeleteMediaMutation.Field()
     send_test_notification = SendTestMutation.Field()
+    request_password_token = RequestPasswordTokenMutation.Field()
+    reset_password = ResetPasswordMutation.Field()
     pass
 
 
