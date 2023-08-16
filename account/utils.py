@@ -17,7 +17,7 @@ def password_reset_firstflow(email):
         subject = "Password Reset"
         message = f"Dear {username}, your Password reset token is: {token}"
         from_email = "yourparagraph@myparagraph.space"
-        to_email = email
+        to_email = [email]
         send_mail(subject, message, from_email, to_email, fail_silently=False)
         
 
