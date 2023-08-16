@@ -27,7 +27,7 @@ from django.views.decorators.csrf import csrf_exempt
 from graphene_file_upload.django import FileUploadGraphQLView
 
 urlpatterns = [
-    path('paragraph/admin', admin.site.urls),
+    path('bluepill/paragraph', admin.site.urls),
     path('login', loginview, name="loginview"),
     # API Views
 
