@@ -32,7 +32,7 @@ SECRET_KEY = config('SECRET_KEY')
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = False
 
-ALLOWED_HOSTS = ["app.myparagraph.space"]
+ALLOWED_HOSTS = []
 
 AUTH_USER_MODEL = "account.Account"
 AUTHENTICATION_BACKENDS = (
@@ -182,11 +182,11 @@ USE_TZ = True
 
 STATIC_URL = "/static/"
 STATICFILES_STORAGE = "whitenoise.storage.CompressedManifestStaticFilesStorage"
-STATIC_ROOT = '/home/childoftext/apps/paragraphstatic'
+STATIC_ROOT = '/home/user/path-to/paragraphstatic'
 
 MEDIA_URL = '/media/'
 
-MEDIA_ROOT = '/home/childoftext/apps/paragraphmedia'
+MEDIA_ROOT = '/home/user/path-to/paragraphmedia'
 
 # Default primary key field type
 # https://docs.djangoproject.com/en/4.2/ref/settings/#default-auto-field
@@ -215,7 +215,7 @@ GRAPHQL_JWT = {
 }
 
 
-firebase_cred = credentials.Certificate("/home/childoftext/config/google/paragraph-2a2a2-firebase-adminsdk-9tb5v-852c5b2e04.json")
+firebase_cred = credentials.Certificate("/home/user/path-to/firebase-adminsdk.json")
 
 
 FIREBASE_APP = initialize_app(firebase_cred)
