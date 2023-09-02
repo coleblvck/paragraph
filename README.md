@@ -17,8 +17,8 @@
 
 # 📓 Some Important Notes:
 
-- The frontend (web browser aspect) has been disconnected from the URLs in favour of GraphQL api. You can setup the routes in urls.py if you'd prefer to use this. Note that many features (Notifications, Profile Picture upload, adding notes, paragraph status sharing, live mode, etc...) are not implemented in this aspect as I stopped actively implementing them with HTML/CSS early into the development process (in favour of Flutter with GraphQL).
 - This is not a representation of Django best practices, as it was written for prototyping purposes.
+- The frontend (web browser aspect) has been disconnected from the URLs in favour of GraphQL api. You can setup the routes in urls.py if you'd prefer to use this. Note that many features (Notifications, Profile Picture upload, adding notes, paragraph status sharing, live mode, etc...) are not implemented in this aspect as I stopped actively implementing them with HTML/CSS early into the development process (in favour of Flutter with GraphQL).
 - If you'd wish to use this; You'd have to Iron out some implementations using your preferred methods for some features such as the live mode; as I built this with a corresponding mobile app which shares the user's now-playing audio with friends.
 - GraphQL subscriptions can be implemented for live texting (I tried doing this, it was not reliable for my use case so I stuck with querying in a specific interval for this purpose)
 
