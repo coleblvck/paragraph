@@ -1,9 +1,7 @@
 # 📠 Paragraph 1.1 - Django texting.
 > Simplified texting and media sharing app built with django
 
-# Features
-
----
+# Features:
 
 - Texting (Live or not, you can implement this however you like)
 - Search and view profiles, add friends, unfriend and block (You can only text friends)
