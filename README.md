@@ -7,7 +7,7 @@
 <br>
 [![Android](https://img.shields.io/badge/Android-3DDC84?style=for-the-badge&logo=android&logoColor=white)](https://github.com/coleblvck/paragraph-for-android)
 <br>
-[![Firefox Browser Badge](https://img.shields.io/badge/Firefox%20Browser-FF7139?logo=firefoxbrowser&logoColor=fff&style=plastic)](https://web.myparagraph.space)
+[![Google Chrome Badge](https://img.shields.io/badge/Google%20Chrome-4285F4?logo=googlechrome&logoColor=fff&style=flat-square)](https://web.myparagraph.space)
 
 ---
 
