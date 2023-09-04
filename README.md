@@ -5,7 +5,7 @@
 
 [Website](https://myparagraph.space)
 <br>
-[Android App](https://github.com/coleblvck/paragraph-for-android)
+[![Android](https://img.shields.io/badge/Android-3DDC84?style=for-the-badge&logo=android&logoColor=white)](https://github.com/coleblvck/paragraph-for-android)
 <br>
 [Web App](https://web.myparagraph.space)
 
