@@ -5,8 +5,7 @@
 
 [Website](https://myparagraph.space)
 <br>
-[![Android](https://img.shields.io/badge/Android-3DDC84?style=for-the-badge&logo=android&logoColor=white)](https://github.com/coleblvck/paragraph-for-android)
-<br>
+[![Android Badge](https://img.shields.io/badge/Android-3DDC84?logo=android&logoColor=fff&style=flat-square)](https://github.com/coleblvck/paragraph-for-android)
 [![Google Chrome Badge](https://img.shields.io/badge/Google%20Chrome-4285F4?logo=googlechrome&logoColor=fff&style=flat-square)](https://web.myparagraph.space)
 
 ---
